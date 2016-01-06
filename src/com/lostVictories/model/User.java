@@ -1,0 +1,66 @@
+package com.lostVictories.model;
+
+import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
+
+import java.io.IOException;
+import java.util.UUID;
+
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.elasticsearch.common.bytes.BytesReference;
+import org.elasticsearch.common.xcontent.XContentBuilder;
+
+@XmlRootElement
+public class User {
+
+	private final UUID id; 
+	private String username;
+	private String email;
+	private String password1;
+	private String password2;
+	
+	public User() {
+		id = UUID.randomUUID();
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPassword1() {
+		return password1;
+	}
+	public void setPassword1(String password1) {
+		this.password1 = password1;
+	}
+	public String getPassword2() {
+		return password2;
+	}
+	public void setPassword2(String password2) {
+		this.password2 = password2;
+	}
+	
+	@JsonIgnore
+	public XContentBuilder getJSONRepresentation() throws IOException {
+		return jsonBuilder()
+		            .startObject()
+		                .field("username", username)
+		                .field("email", email)
+		                .field("password1", password1)
+		            .endObject();
+	}
+
+	public UUID getId() {
+		return id;
+	}
+	
+}
