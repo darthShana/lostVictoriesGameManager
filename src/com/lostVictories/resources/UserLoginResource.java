@@ -23,8 +23,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import com.lostVictories.dao.UserDAO;
 import com.lostVictories.model.User;
 
-@Path("/createUser")
-public class CreateUserResource {
+@Path("/userLogin")
+public class UserLoginResource {
 
 	@Context
     UriInfo uriInfo;
@@ -33,43 +33,34 @@ public class CreateUserResource {
 	private UserDAO userDAO;
 	
 	@Inject
-    public CreateUserResource(UserDAO userDAO) {
+    public UserLoginResource(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
     
 	@GET
 	@Produces({MediaType.APPLICATION_JSON})
-	public Response createUser() throws JsonProcessingException, IOException{
-		
+	public Response userLogin() throws JsonProcessingException, IOException{
 		JsonNode u = MAPPER.readTree(uriInfo.getQueryParameters().getFirst("user"));
 		User user = MAPPER.treeToValue(u, User.class);
-		if(userDAO.existsUsername(user.getUsername())){
-			return returnError(Status.BAD_REQUEST, "Username already exists");
-		}
-		if(userDAO.existsEmail(user.getEmail())){
-			return returnError(Status.BAD_REQUEST, "email already registered");
-		}
-		if(user.getPassword1()==null || user.getPassword1().isEmpty() || !user.getPassword1().equals(user.getPassword2())){
-			return returnError(Status.BAD_REQUEST, "password invalid");
-		}else{
-			user.setPassword1(BCrypt.hashpw(user.getPassword1(), BCrypt.gensalt()));
-		}
 		
-		UUID randomUUID = UUID.randomUUID();
-		userDAO.createUser(user, randomUUID);
-		user.setId(randomUUID);
-		return returnSuccess(user);
+		User stored = userDAO.getUser(user.getUsername());
+		if(stored!=null && BCrypt.checkpw(user.getPassword1(), stored.getPassword1())){
+			stored.clearPAsswords();
+			return returnSuccess(stored);
+		}
+		return returnError(Status.BAD_REQUEST, "Invalid user name or password");
+		
 	}
 
-	private Response returnSuccess(User user) {
+	public static Response returnSuccess(Object user) {
 		return Response.ok().header("Access-Control-Allow-Origin", getCrossDomainString()).entity(user).build();
 	}
 
-	private Response returnError(Status status, String message) {
+	public static Response returnError(Status status, String message) {
 		return Response.status(status).header("Access-Control-Allow-Origin", getCrossDomainString()).entity(message).build();
 	}
 
-	private String getCrossDomainString() {
+	private static String getCrossDomainString() {
 		return "*";
 	}
 	

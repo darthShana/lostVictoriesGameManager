@@ -1,8 +1,7 @@
 package com.lostVictories.dao;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -10,6 +9,7 @@ import javax.inject.Singleton;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
@@ -19,7 +19,12 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
+import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.FilteredQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 
+import com.lostVictories.model.Game;
 import com.lostVictories.model.User;
 
 @Singleton
@@ -39,14 +44,17 @@ public class UserDAO {
 		    XContentBuilder builder = XContentFactory.jsonBuilder().startObject().startObject("user").startObject("properties");
 		    builder.startObject("username")
 	        	.field("type", "string")
+	        	.field("index", "not_analyzed")
 	        	.field("store", "yes")
 	        	.endObject();
 		    builder.startObject("email")
 	        	.field("type", "string")
+	        	.field("index", "not_analyzed")
 	        	.field("store", "yes")
 	        	.endObject();
 		    builder.startObject("password1")
 	        	.field("type", "string")
+	        	.field("index", "not_analyzed")
 	        	.field("store", "yes")
 	        	.endObject();
 			    
@@ -56,26 +64,44 @@ public class UserDAO {
 	}
 	
 	public boolean existsUsername(String username) {
+		FilteredQueryBuilder builder = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(),
+				   FilterBuilders.termFilter("username",username));
 		SearchResponse response =
 				esClient.prepareSearch(indexName).setTypes("user")
-			          .setQuery(
-			                   matchQuery("username", username))
-			          .execute()
-			          .actionGet();
+			       .setQuery(builder)
+			       .execute()
+			       .actionGet();
 		return response.getHits().getTotalHits()!=0;
 	}
 
 	public boolean existsEmail(String email) {
+		FilteredQueryBuilder builder = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(),
+				   FilterBuilders.termFilter("email",email));
 		SearchResponse response =
 				esClient.prepareSearch(indexName).setTypes("user")
-			          .setQuery(
-			        		  matchQuery("email", email))
-			          .execute()
-			          .actionGet();
+			       .setQuery(builder)
+			       .execute()
+			       .actionGet();
 		return response.getHits().getTotalHits()!=0;
 	}
 	
-	private Client getESClient() {
+	public User getUser(String username) {
+		FilteredQueryBuilder builder = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(),
+				   FilterBuilders.termFilter("username",username));
+		SearchResponse response =
+				esClient.prepareSearch(indexName).setTypes("user")
+			       .setQuery(builder)
+			       .execute()
+			       .actionGet();
+		Iterator<SearchHit> iterator = response.getHits().iterator();
+		if(!iterator.hasNext()){
+			return null;
+		}
+		SearchHit next = iterator.next();
+		return new User(UUID.fromString(next.getId()), next.getSource());
+	}
+	
+	public static Client getESClient() {
 		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", "elasticsearch").build();
 		TransportClient transportClient = new TransportClient(settings);
 		transportClient = transportClient.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
@@ -84,10 +110,10 @@ public class UserDAO {
 		
 	}
 
-	public void createUser(User user) {
+	public void createUser(User user, UUID id) {
 		
 		try {
-			esClient.prepareIndex(indexName, "unitStatus", user.getId().toString())
+			esClient.prepareIndex(indexName, "user", id.toString())
 			        .setSource(user.getJSONRepresentation())
 			        .execute()
 			        .actionGet();
@@ -96,6 +122,13 @@ public class UserDAO {
 			throw new RuntimeException(e);
 		}
 		
+	}
+
+	public User getUser(UUID id) {
+		GetResponse response = esClient.prepareGet(indexName, "user", id.toString())
+		        .execute()
+		        .actionGet();
+		return new User(UUID.fromString(response.getId()), response.getSource());
 	}
 
 }

@@ -3,6 +3,7 @@ package com.lostVictories.model;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -14,16 +15,21 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 @XmlRootElement
 public class User {
 
-	private final UUID id; 
+	private UUID id; 
 	private String username;
 	private String email;
 	private String password1;
 	private String password2;
 	
-	public User() {
-		id = UUID.randomUUID();
-	}
+	public User() {}
 	
+	public User(UUID id, Map<String, Object> source) {
+		this.id = id;
+		this.username = (String)source.get("username");
+		this.email = (String)source.get("email");
+		this.password1 = (String)source.get("password1");
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -61,6 +67,16 @@ public class User {
 
 	public UUID getId() {
 		return id;
+	}
+
+	public void clearPAsswords() {
+		password1 = null;
+		password2 = null;
+		
+	}
+
+	public void setId(UUID id) {
+		this.id = id;
 	}
 	
 }

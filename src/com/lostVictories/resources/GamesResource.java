@@ -1,7 +1,8 @@
 package com.lostVictories.resources;
-
+import static com.lostVictories.resources.UserLoginResource.returnSuccess;
 import java.util.UUID;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -15,6 +16,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 
 import com.lostVictories.model.Game;
+import com.lostVictories.model.GameService;
 
 
 @Path("/games")
@@ -29,14 +31,22 @@ public class GamesResource {
     UriInfo uriInfo;
     @Context
     Request request;
+	private GameService gameService;
+    
+	@Inject
+    public GamesResource(GameService gameService) {
+		this.gameService = gameService;
+	}
 	
 	@GET
 	@Produces({MediaType.APPLICATION_JSON})
     public Response getGames() {
+		String u = uriInfo.getQueryParameters().getFirst("userID");
+		UUID id = UUID.fromString(u);
+		
 		ArrayNode list = MAPPER.createArrayNode();
-		list.add(MAPPER.valueToTree(new Game(UUID.randomUUID())));
-		list.add(MAPPER.valueToTree(new Game(UUID.randomUUID())));
-		return Response.ok().header("Access-Control-Allow-Origin", "*").entity(list).build();
+		gameService.getGameInfo(id).stream().forEach(g->list.add(MAPPER.valueToTree(g)));
+		return returnSuccess(list);
 	}
 }
 
