@@ -12,6 +12,7 @@ public class Game {
 	private long startDate;
 	private boolean joined;
 	private UUID avatarID;
+	private String gameVersion;
 
 	public Game(){}
 
@@ -21,6 +22,7 @@ public class Game {
 		host = (String) source.get("host");
 		port = source.get("port")+"";
 		startDate =  (long) source.get("startDate");
+		gameVersion = (String) source.get("gameVersion");
 	}
 
 	public Game(Map<String, Object> source, String id) {
@@ -83,6 +85,14 @@ public class Game {
 
 	public void setAvatarID(UUID avatarID) {
 		this.avatarID = avatarID;
+	}
+
+	public String getGameVersion() {
+		return gameVersion;
+	}
+
+	public void setGameVersion(String gameVersion) {
+		this.gameVersion = gameVersion;
 	}
 
 }

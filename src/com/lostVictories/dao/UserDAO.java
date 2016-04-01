@@ -102,7 +102,7 @@ public class UserDAO {
 	}
 	
 	public static Client getESClient() {
-		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", "elasticsearch").build();
+		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", "lostVictories").build();
 		TransportClient transportClient = new TransportClient(settings);
 		transportClient = transportClient.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
 		return (Client) transportClient;

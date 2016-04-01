@@ -98,25 +98,20 @@ public class GameDAO {
                 .field("userID", user.getId())
                 .field("objectives", MAPPER.writeValueAsString(objectives))
             .endObject();
-		
+		System.out.println("converting to avatar:"+selected.getId());
 		esClient.prepareUpdate(indexName, "unitStatus", selected.getId()).setDoc(update).execute().actionGet();
 		esClient.admin().indices().refresh(new RefreshRequest(indexName)).actionGet();
 		
 	}
 	
 	private String createBootCampObjective(String country)  {
-		ObjectNode node = MAPPER.createObjectNode();
-		try {
-			node.put("classType", "com.jme3.lostVictories.objectives.CompleteBootCamp");
-			if("GERMAN".equals(country)){
-				node.put("location", "{\"x\":-225.0,\"y\":7.0,\"z\":305.0}");
-			}else{
-				node.put("location", "{\"x\":-125.0,\"y\":7.0,\"z\":-330.0}");
-			}
-			return MAPPER.writeValueAsString(node);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		
+		if("GERMAN".equals(country)){
+			return "{\"classType\":\"com.jme3.lostVictories.objectives.CompleteBootCamp\",\"location\":{\"x\":246.29144287109375,\"y\":96.77545928955078,\"z\":55.41226577758789}}";
+		}else{
+			return "{\"classType\":\"com.jme3.lostVictories.objectives.CompleteBootCamp\",\"location\":{\"x\":99.0,\"y\":100.0,\"z\":-372.0}}";
 		}
+		
 	}
 
 }

@@ -20,6 +20,7 @@ public class User {
 	private String email;
 	private String password1;
 	private String password2;
+	private String recaptchaResponse;
 	
 	public User() {}
 	
@@ -77,6 +78,14 @@ public class User {
 
 	public void setId(UUID id) {
 		this.id = id;
+	}
+
+	public String getRecaptchaResponse() {
+		return recaptchaResponse;
+	}
+
+	public void setRecaptchaResponse(String recaptchaResponse) {
+		this.recaptchaResponse = recaptchaResponse;
 	}
 	
 }
