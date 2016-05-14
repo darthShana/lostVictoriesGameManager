@@ -7,8 +7,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -23,19 +21,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
-import org.apache.lucene.queryparser.flexible.core.util.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.lostVictories.dao.UserDAO;
 import com.lostVictories.model.User;
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientResponse;
-import com.sun.jersey.api.client.WebResource;
-import com.sun.jersey.api.client.config.ClientConfig;
-import com.sun.jersey.api.client.config.DefaultClientConfig;
-import com.sun.jersey.api.json.JSONConfiguration;
 
 @Path("/createUser")
 public class CreateUserResource {
@@ -65,17 +56,16 @@ public class CreateUserResource {
 		boolean recapchaResponse = verifyRecapchaResponse(user.getRecaptchaResponse());
 		
 		if(!recapchaResponse){
-			return returnError(Status.BAD_REQUEST, "Capcha failed!");
+			return Response.status(Status.BAD_REQUEST).entity("Capcha failed!").build();			
 		}
-		
 		if(null==user.getUsername() || userDAO.existsUsername(user.getUsername())){
-			return returnError(Status.BAD_REQUEST, "Username already exists");
+			return Response.status(Status.BAD_REQUEST).entity("Username already exists").build();			
 		}
 		if(userDAO.existsEmail(user.getEmail())){
-			return returnError(Status.BAD_REQUEST, "email already registered");
+			return Response.status(Status.BAD_REQUEST).entity("email already registered").build();
 		}
 		if(user.getPassword1()==null || user.getPassword1().isEmpty() || !user.getPassword1().equals(user.getPassword2())){
-			return returnError(Status.BAD_REQUEST, "password invalid");
+			return Response.status(Status.BAD_REQUEST).entity("password invalid").build();
 		}else{
 			user.setPassword1(BCrypt.hashpw(user.getPassword1(), BCrypt.gensalt()));
 		}
@@ -83,7 +73,8 @@ public class CreateUserResource {
 		UUID randomUUID = UUID.randomUUID();
 		userDAO.createUser(user, randomUUID);
 		user.setId(randomUUID);
-		return returnSuccess(user);
+		user.clearPAsswords();
+		return Response.ok().entity(user).build();
 	}
 
 	private boolean verifyRecapchaResponse(String gRecaptchaResponse) {
@@ -128,19 +119,19 @@ public class CreateUserResource {
         }
 	}
 
-	private Response returnSuccess(User user) {
-		return Response.ok().header("Access-Control-Allow-Origin", getCrossDomainString()).entity(user).build();
-		//return Response.ok().entity(user).build();
-	}
-
-	private Response returnError(Status status, String message) {
-		return Response.status(status).header("Access-Control-Allow-Origin", getCrossDomainString()).entity(message).build();
-		//return Response.status(status).entity(message).build();
-	}
-
-	private String getCrossDomainString() {
-		return "*";
-	}
+//	private Response returnSuccess(User user) {
+//		return Response.ok().header("Access-Control-Allow-Origin", getCrossDomainString()).entity(user).build();
+//		//return Response.ok().entity(user).build();
+//	}
+//
+//	private Response returnError(Status status, String message) {
+//		return Response.status(status).header("Access-Control-Allow-Origin", getCrossDomainString()).entity(message).build();
+//		//return Response.status(status).entity(message).build();
+//	}
+//
+//	private String getCrossDomainString() {
+//		return "*";
+//	}
 	
 	
 }

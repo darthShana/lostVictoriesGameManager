@@ -13,6 +13,10 @@ public class Game {
 	private boolean joined;
 	private UUID avatarID;
 	private String gameVersion;
+	private String gameStatus;
+	private String victor;
+	private Long endDate;
+	private String country;
 
 	public Game(){}
 
@@ -23,12 +27,16 @@ public class Game {
 		port = source.get("port")+"";
 		startDate =  (long) source.get("startDate");
 		gameVersion = (String) source.get("gameVersion");
+		setGameStatus((String) source.get("gameStatus"));
+		setVictor((String) source.get("victor"));
+		setEndDate((Long) source.get("endDate"));
 	}
 
-	public Game(Map<String, Object> source, String id) {
+	public Game(Map<String, Object> source, String id, String country) {
 		this(source);
 		avatarID = UUID.fromString(id);
 		joined = true;
+		this.setCountry(country);
 	}
 
 	public UUID getId() {
@@ -93,6 +101,38 @@ public class Game {
 
 	public void setGameVersion(String gameVersion) {
 		this.gameVersion = gameVersion;
+	}
+
+	public String getGameStatus() {
+		return gameStatus;
+	}
+
+	public void setGameStatus(String gameStatus) {
+		this.gameStatus = gameStatus;
+	}
+
+	public String getVictor() {
+		return victor;
+	}
+
+	public void setVictor(String victor) {
+		this.victor = victor;
+	}
+
+	public Long getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Long endDate) {
+		this.endDate = endDate;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 
 }

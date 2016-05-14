@@ -3,7 +3,6 @@ package com.lostVictories.resources;
 import static com.lostVictories.resources.GamesResource.MAPPER;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -46,23 +45,14 @@ public class UserLoginResource {
 		User stored = userDAO.getUser(user.getUsername());
 		if(stored!=null && BCrypt.checkpw(user.getPassword1(), stored.getPassword1())){
 			stored.clearPAsswords();
-			return returnSuccess(stored);
+			return Response.ok().entity(stored).build();
 		}
-		return returnError(Status.BAD_REQUEST, "Invalid user name or password");
+		
+		return Response.status(Status.BAD_REQUEST).entity("Invalid user name or password").build();
 		
 	}
 
-	public static Response returnSuccess(Object user) {
-		return Response.ok().header("Access-Control-Allow-Origin", getCrossDomainString()).entity(user).build();
-	}
 
-	public static Response returnError(Status status, String message) {
-		return Response.status(status).header("Access-Control-Allow-Origin", getCrossDomainString()).entity(message).build();
-	}
-
-	private static String getCrossDomainString() {
-		return "*";
-	}
 	
 	
 }

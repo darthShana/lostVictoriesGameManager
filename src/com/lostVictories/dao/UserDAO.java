@@ -32,6 +32,7 @@ public class UserDAO {
 
 	private Client esClient;
 	private String indexName = "users";
+	private static TransportClient transportClient;
 	
 	@Inject
 	public UserDAO() throws IOException {
@@ -102,9 +103,11 @@ public class UserDAO {
 	}
 	
 	public static Client getESClient() {
-		Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", "lostVictories").build();
-		TransportClient transportClient = new TransportClient(settings);
-		transportClient = transportClient.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
+		if(transportClient==null){
+			Settings settings = ImmutableSettings.settingsBuilder().put("cluster.name", "lostVictories").build();
+			transportClient = new TransportClient(settings);
+			transportClient = transportClient.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
+		}
 		return (Client) transportClient;
 
 		

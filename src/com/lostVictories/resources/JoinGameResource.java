@@ -1,7 +1,5 @@
 package com.lostVictories.resources;
 
-import static com.lostVictories.resources.UserLoginResource.returnSuccess;
-
 import java.io.IOException;
 import java.util.UUID;
 
@@ -17,15 +15,12 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
-import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.node.ArrayNode;
 
-import com.lostVictories.dao.GameDAO;
 import com.lostVictories.dao.UserDAO;
 import com.lostVictories.model.Game;
 import com.lostVictories.model.GameService;
-import com.lostVictories.model.User;
 
 @Path("/joinGame")
 public class JoinGameResource {
@@ -56,6 +51,6 @@ public class JoinGameResource {
 		
     	ArrayNode list = MAPPER.createArrayNode();
 		gameService.getGameInfo(id).stream().forEach(g->list.add(MAPPER.valueToTree(g)));
-		return returnSuccess(list);
+		return Response.ok().entity(list).build();
     }
 }

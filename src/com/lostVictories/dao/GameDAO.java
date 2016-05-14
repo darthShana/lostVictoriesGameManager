@@ -67,7 +67,7 @@ public class GameDAO {
 					ret.add(new Game(response.getSource()));
 				}else{
 					SearchHit character = iterator.next();
-					ret.add(new Game(response.getSource(), character.getId()));
+					ret.add(new Game(response.getSource(), character.getId(), (String)character.getSource().get("country")));
 				}
 			}
 		}
