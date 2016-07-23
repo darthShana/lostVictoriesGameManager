@@ -11,7 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.inject.Singleton;
 
@@ -28,6 +32,7 @@ import org.elasticsearch.index.query.FilteredQueryBuilder;
 import org.elasticsearch.search.SearchHit;
 
 import com.lostVictories.model.Game;
+import com.lostVictories.model.GameRequest;
 import com.lostVictories.model.User;
 
 @Singleton
@@ -84,12 +89,16 @@ public class GameDAO {
 			       .setQuery(builder)
 			       .execute()
 			       .actionGet();
+		
 		Iterator<SearchHit> iterator = response.getHits().iterator();
-		if(!iterator.hasNext()){
+		Iterable<SearchHit> iterable = () -> iterator;
+		List<String> available = StreamSupport.stream(iterable.spliterator(), true).map(hit -> hit.getId()).collect(Collectors.toList());
+		
+		if(available.isEmpty()){
 			throw new RuntimeException("Unable to find");
 		}
 		
-		SearchHit selected = iterator.next();
+		String selected = available.get(new Random().nextInt(available.size()));
 		HashMap<String, String> objectives = new HashMap<String, String>();
 		objectives.put(UUID.randomUUID().toString(), createBootCampObjective(country));
 		XContentBuilder update = jsonBuilder()
@@ -98,8 +107,8 @@ public class GameDAO {
                 .field("userID", user.getId())
                 .field("objectives", MAPPER.writeValueAsString(objectives))
             .endObject();
-		System.out.println("converting to avatar:"+selected.getId());
-		esClient.prepareUpdate(indexName, "unitStatus", selected.getId()).setDoc(update).execute().actionGet();
+		System.out.println("converting to avatar:"+selected);
+		esClient.prepareUpdate(indexName, "unitStatus", selected).setDoc(update).execute().actionGet();
 		esClient.admin().indices().refresh(new RefreshRequest(indexName)).actionGet();
 		
 	}

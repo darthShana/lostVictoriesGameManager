@@ -15,6 +15,7 @@ import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
@@ -30,6 +31,7 @@ import javax.ws.rs.core.Response.Status;
 @Path("/games")
 public class GamesResource {
 
+	private static Logger log = Logger.getLogger(GamesResource.class); 
 	public static ObjectMapper MAPPER;
 	static{
 		MAPPER = new ObjectMapper();
@@ -67,7 +69,9 @@ public class GamesResource {
 	@POST
     @Consumes(MediaType.APPLICATION_JSON)
 	public Response putGame(JsonNode _u) throws IOException{
-		User user = userDAO.getUser(UUID.fromString(_u.get("id").asText()));
+		String asText = _u.get("id").asText();
+		log.info("put gam by user:"+asText);
+		User user = userDAO.getUser(UUID.fromString(asText));
 		try{
 			Game createGame = gameService.createGame(user);
 			return Response.ok().entity(createGame).build();

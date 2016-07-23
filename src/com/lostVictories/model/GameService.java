@@ -4,15 +4,18 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.apache.log4j.Logger;
 
 import com.lostVictories.dao.GameDAO;
 import com.lostVictories.dao.GameRequestDAO;
 
 public class GameService {
 
+	private static Logger log = Logger.getLogger(GameService.class); 
 	private static final int MAX_ALLOWED_RUNNING = 1;
 	private GameDAO gameDAO;
 	private GameRequestDAO gameRequestDAO;
@@ -27,8 +30,8 @@ public class GameService {
 		return gameDAO.loadAllGames(id);
 	}
 
-	public void joinGame(String name, User user, String country) throws IOException {
-		String indexName = name+"_unit_status";
+	public void joinGame(String instance, User user, String country) throws IOException {
+		String indexName = instance+"_unit_status";
 		
 		gameDAO.joinGame(indexName, user, country);
 		
@@ -40,10 +43,12 @@ public class GameService {
 			throw new RuntimeException("no game name unavailable");
 		}
 		List<Game> existingGames = gameDAO.loadAllGames(user.getId());
-		existingGames.stream().filter(g -> "inProgress".equals(g.getGameStatus()));
+		existingGames = existingGames.stream().filter(g -> "inProgress".equals(g.getGameStatus())).collect(Collectors.toList());
+		log.info("existing inprogress games:"+existingGames);
 		
 		Set<GameRequest> existingRequests = gameRequestDAO.getAll();
-		existingGames.stream().filter(g -> "REQUESTED".equals(g.getGameStatus()));
+		existingRequests = existingRequests.stream().filter(g -> "REQUESTED".equals(g.getStatus())).collect(Collectors.toSet());
+		log.info("existing inprogress requestes:"+existingRequests);
 		
 		if(existingGames.size()+existingRequests.size()>=MAX_ALLOWED_RUNNING){
 			throw new RuntimeException("game limit exceeded");

@@ -47,7 +47,7 @@ public class JoinGameResource {
 		
 		Game game = MAPPER.readValue(uriInfo.getQueryParameters().getFirst("game"), Game.class);
     	
-		gameService.joinGame(game.getName(), userDAO.getUser(id), country);
+		gameService.joinGame(game.getId(), userDAO.getUser(id), country);
 		
     	ArrayNode list = MAPPER.createArrayNode();
 		gameService.getGameInfo(id).stream().forEach(g->list.add(MAPPER.valueToTree(g)));

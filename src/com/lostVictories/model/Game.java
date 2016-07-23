@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Game {
 
-	private UUID id;
+	private String id;
 	private String name;
 	private String host;
 	private String port;
@@ -21,7 +21,7 @@ public class Game {
 	public Game(){}
 
 	public Game(Map<String, Object> source) {
-		id = UUID.fromString((String)source.get("gameID"));
+		id = (String)source.get("gameID");
 		name = (String) source.get("name");
 		host = (String) source.get("host");
 		port = source.get("port")+"";
@@ -39,11 +39,11 @@ public class Game {
 		this.setCountry(country);
 	}
 
-	public UUID getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
