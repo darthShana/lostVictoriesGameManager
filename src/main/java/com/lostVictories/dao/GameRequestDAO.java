@@ -5,7 +5,6 @@ import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -24,12 +23,12 @@ import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.FilteredQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.springframework.stereotype.Repository;
 
-import com.google.inject.Singleton;
 import com.lostVictories.model.GameRequest;
 import com.lostVictories.model.User;
 
-@Singleton
+@Repository
 public class GameRequestDAO {
 	
 	private Client esClient;

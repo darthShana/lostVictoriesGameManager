@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.UUID;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
@@ -23,18 +21,17 @@ import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.FilteredQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
+import org.springframework.stereotype.Repository;
 
-import com.lostVictories.model.Game;
 import com.lostVictories.model.User;
 
-@Singleton
+@Repository
 public class UserDAO {
 
 	private Client esClient;
 	private String indexName = "users";
 	private static TransportClient transportClient;
 	
-	@Inject
 	public UserDAO() throws IOException {
 		esClient = getESClient();
 		IndicesAdminClient adminClient = esClient.admin().indices();

@@ -1,25 +1,19 @@
 package com.lostVictories.dao;
 
 import static com.lostVictories.dao.UserDAO.getESClient;
-import static com.lostVictories.resources.GamesResource.MAPPER;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.query.FilterBuilders.termFilter;
 import static org.elasticsearch.index.query.FilterBuilders.andFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import javax.inject.Singleton;
-
-import org.codehaus.jackson.node.ObjectNode;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -30,12 +24,12 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.FilteredQueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.springframework.stereotype.Repository;
 
 import com.lostVictories.model.Game;
-import com.lostVictories.model.GameRequest;
 import com.lostVictories.model.User;
 
-@Singleton
+@Repository
 public class GameDAO {
 
 	private Client esClient;
@@ -99,13 +93,13 @@ public class GameDAO {
 		}
 		
 		String selected = available.get(new Random().nextInt(available.size()));
-		HashMap<String, String> objectives = new HashMap<String, String>();
-		objectives.put(UUID.randomUUID().toString(), createBootCampObjective(country));
+//		HashMap<String, String> objectives = new HashMap<String, String>();
+//		objectives.put(UUID.randomUUID().toString(), createBootCampObjective(country));
 		XContentBuilder update = jsonBuilder()
 	            .startObject()
                 .field("type", "AVATAR")
                 .field("userID", user.getId())
-                .field("objectives", MAPPER.writeValueAsString(objectives))
+//                .field("objectives", MAPPER.writeValueAsString(objectives))
             .endObject();
 		System.out.println("converting to avatar:"+selected);
 		esClient.prepareUpdate(indexName, "unitStatus", selected).setDoc(update).execute().actionGet();

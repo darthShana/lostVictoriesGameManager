@@ -6,9 +6,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lostVictories.dao.GameDAO;
 import com.lostVictories.dao.GameRequestDAO;
@@ -20,7 +19,7 @@ public class GameService {
 	private GameDAO gameDAO;
 	private GameRequestDAO gameRequestDAO;
 
-	@Inject
+	@Autowired
 	public GameService(GameDAO gameDAO, GameRequestDAO gameRequestDAO) {
 		this.gameDAO = gameDAO;
 		this.gameRequestDAO = gameRequestDAO;

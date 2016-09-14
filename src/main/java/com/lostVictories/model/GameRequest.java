@@ -6,8 +6,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.elasticsearch.common.xcontent.XContentBuilder;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class GameRequest {
 
