@@ -70,10 +70,10 @@ public class User {
 		return id;
 	}
 
-	public void clearPAsswords() {
+	public User clearPAsswords() {
 		password1 = null;
 		password2 = null;
-		
+		return this;
 	}
 
 	public void setId(UUID id) {

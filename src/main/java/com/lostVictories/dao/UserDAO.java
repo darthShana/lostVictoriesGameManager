@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
 import org.elasticsearch.action.admin.indices.exists.indices.IndicesExistsResponse;
+import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
@@ -117,7 +118,7 @@ public class UserDAO {
 			        .setSource(user.getJSONRepresentation())
 			        .execute()
 			        .actionGet();
-
+			esClient.admin().indices().refresh(new RefreshRequest(indexName)).actionGet();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

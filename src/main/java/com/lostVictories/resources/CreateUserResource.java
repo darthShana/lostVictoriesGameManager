@@ -6,12 +6,13 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.UUID;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class CreateUserResource {
 	}
     
 	@RequestMapping(path="", method=POST, consumes=APPLICATION_JSON_VALUE, produces=APPLICATION_JSON_VALUE)
-	public User createUser(@RequestBody User user) throws IOException{
+	public User createUser(@RequestBody User user, HttpServletRequest request) throws ServletException{
 		boolean recapchaResponse = verifyRecapchaResponse(user.getRecaptchaResponse());
 		
 		if(!recapchaResponse){
@@ -61,8 +62,8 @@ public class CreateUserResource {
 		UUID randomUUID = UUID.randomUUID();
 		userDAO.createUser(user, randomUUID);
 		user.setId(randomUUID);
-		user.clearPAsswords();
-		return user;
+		request.login(user.getUsername(), user.getPassword2());
+		return user.clearPAsswords();
 	}
 
 	private boolean verifyRecapchaResponse(String gRecaptchaResponse) {
