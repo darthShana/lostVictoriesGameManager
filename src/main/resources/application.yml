@@ -1,6 +1,9 @@
 server:
   port: 8080
   context-path: /lostVictoriesGameManager
+  session:
+    cookie:
+      path: /
 
 logging:
   level:
