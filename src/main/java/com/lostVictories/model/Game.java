@@ -1,9 +1,10 @@
 package com.lostVictories.model;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
 
-public class Game {
+public class Game implements Serializable{
 
 	private String id;
 	private String name;

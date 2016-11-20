@@ -3,6 +3,7 @@ package com.lostVictories.model;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
 
@@ -13,7 +14,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @XmlRootElement
-public class User {
+public class User implements Serializable{
 
 	private UUID id; 
 	private String username;
