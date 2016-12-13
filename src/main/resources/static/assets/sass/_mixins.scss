@@ -1,0 +1,90 @@
+//colors
+$dark-tan: #715e40;
+$medium-tan: #b29b76;
+$light-tan: #fffde4;
+$lightest-tan:#fffef0;
+// $dark-gray: #242a26;
+$dark-gray: #222;
+$medium-gray: #333;
+
+//font styles
+$main-font:'Playfair Display', serif;
+$special-font: 'Oswald', sans-serif;
+
+.right-align{text-align:right;}
+
+.h4-font{
+	font-family:$special-font;
+	color:$dark-gray;
+	font-size:1.3rem;
+	font-weight:300;
+}
+.body-font{
+	font-family:$special-font;
+	color:$dark-gray;
+	font-size:1rem;
+	font-weight:400;
+}
+
+//background-color
+.paper-gradient{
+  	background: $light-tan; /* For browsers that do not support gradients */
+  	background: -webkit-radial-gradient($lightest-tan,$light-tan,$medium-tan); /* Safari 5.1 to 6.0 */
+  	background: -o-radial-gradient($lightest-tan,$light-tan,$medium-tan); /* For Opera 11.6 to 12.0 */
+  	background: -moz-radial-gradient($lightest-tan,$light-tan,$medium-tan); /* For Firefox 3.6 to 15 */
+  	background: radial-gradient($lightest-tan,$light-tan,$medium-tan); /* Standard syntax */
+}
+
+@mixin transition($property){
+	-webkit-transition: $property 2s ease-out;
+  -moz-transition: $property 2s ease-out;
+  -o-transition: $property 2s ease-out;
+  transition: $property 2s ease-out;
+}
+//media queries
+@mixin breakpoint($size) {
+	@if $size == xsmall {
+	    @media (max-width: 20em) {
+	    	@content; 
+	    }
+	}
+	@else if $size == small {
+    	@media (max-width: 30em) {
+    		@content; 
+    	}
+  	}
+  	@else if $size == smedium {
+    	@media (max-width: 40em) {
+	    	@content;       
+	    }
+	}
+	@else if $size == medium {
+	    @media (max-width: 60em) {
+	      	@content;       
+	    }
+	}
+	@else if $size == mlarge {
+	    @media (max-width: 70em) {
+	      	@content;       
+	    }
+	}
+	@else if $size == large {
+	    @media (max-width: 80em) {
+	      	@content;       
+	    }
+	}
+	@else if $size == xlarge {
+	    @media (max-width: 90em) {
+	      	@content;       
+	    }
+	}
+}
+
+//max-width
+// .max{
+// 	// width:90%;
+// 	margin:0 auto;
+// 	max-width:300px;
+// 	@include breakpoint(xsmall){max-width:400px;}
+// 	@include breakpoint(small){max-width:500px;}
+// }

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Spring Security Example </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        
+        <script type="text/javascript">
+	      var verifyCallback = function(response) {
+	        $('#recaptchaResponse').val(response);
+	      };
+	      
+	      var onloadCallback = function() {	        
+	        grecaptcha.render('example3', {
+	          'sitekey' : '6LeQ0xUTAAAAAE09a_8Aoqvmnn2_r3tmtRAxd6vL',
+	          'callback' : verifyCallback,
+	        });
+	      };
+    	</script>
+    </head>
+    <body>
+        <div th:if="${param.error}">
+            Invalid username and password.
+        </div>
+        <div th:if="${param.logout}">
+            You have been logged out.
+        </div>
+        <form action="/login" method="post">
+            <div><label> User Name : <input type="text" name="username"/> </label></div>
+            <div><label> Password: <input type="password" name="password"/> </label></div>
+            <div><input type="submit" value="Sign In"/></div>
+        </form>
+        
+        <form action="/createFormUser" method="post">
+            <div><label> User Name : <input type="text" name="username"/> </label></div>
+            <div><label> Email: <input type="text" name="email"/> </label></div>
+            <div><label> Password: <input type="password" name="password1"/> </label></div>
+            <div><label> Repeat Password: <input type="password" name="password2"/> </label></div>
+            <div id="example3"></div>
+            <input type="hidden" id="recaptchaResponse" name="recaptchaResponse"/>
+            <div><input type="submit" value="Register"/></div>
+        </form>
+        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&amp;render=explicit"
+        async="async" defer="defer">
+    </script>
+    </body>
+</html>

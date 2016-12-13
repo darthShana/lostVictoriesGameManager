@@ -9,8 +9,9 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-public class GameManagerApplication extends SpringBootServletInitializer  {
-	//implements ServletContextInitializer
+public class GameManagerApplication extends SpringBootServletInitializer{
+//	implements ServletContextInitializer{
+
 	
 	public static void main(String[] args){
 		SpringApplication.run(GameManagerApplication.class);

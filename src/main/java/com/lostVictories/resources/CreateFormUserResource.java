@@ -28,8 +28,8 @@ import com.lostVictories.model.User;
 import com.lostVictories.resources.exceptions.InvalidRequestException;
 
 @RestController
-@RequestMapping("/createUser")
-public class CreateUserResource {
+@RequestMapping("/createFormUser")
+public class CreateFormUserResource {
 
 	public static final String url = "https://www.google.com/recaptcha/api/siteverify";
     public static final String secret = "6LeQ0xUTAAAAAIfp98rXXBJMa_43xUX7EMO2YNST";
@@ -38,15 +38,16 @@ public class CreateUserResource {
 	private UserDAO userDAO;
 	
 	@Autowired
-    public CreateUserResource(UserDAO userDAO) {
+    public CreateFormUserResource(UserDAO userDAO) {
 		this.userDAO = userDAO;
 	}
     
-	@RequestMapping(path="", method=POST, consumes=APPLICATION_JSON_VALUE, produces=APPLICATION_JSON_VALUE)
-	public User createUserJSON(@RequestBody User user, HttpServletRequest request) throws ServletException, IOException{
+	@RequestMapping(path="", method=POST)
+	public RedirectView createUserPost(User user, HttpServletRequest request) throws ServletException, IOException{
 		creareUserInternal(user, request);
-		return user;
+		return new RedirectView("home");
 	}
+	
 
 	private void creareUserInternal(User user, HttpServletRequest request) throws ServletException {
 		boolean recapchaResponse = verifyRecapchaResponse(user.getRecaptchaResponse());

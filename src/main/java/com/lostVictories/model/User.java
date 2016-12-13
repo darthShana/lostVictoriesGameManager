@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @XmlRootElement
 public class User implements Serializable{

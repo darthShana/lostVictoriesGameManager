@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>The Lost Victories - Home</title>
+		<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+		<link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,400italic|Oswald:400,700,300' rel='stylesheet' type='text/css' />
+		<link rel="stylesheet" href="assets/css/stylesheet.css" />
+ 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    </head>
+    <body>
+    	<div id="app"></div>
+    	<script>
+		    var domain = 'https://api.lostvictories.com';
+		    //var domain = 'http://localhost:8080/lostVictoriesGameManager';
+		</script>
+		<script src="https://kenwheeler.github.io/mcfly/McFly.js"></script>
+		<script src="js/bundle.js"></script>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </body>
+</html>
