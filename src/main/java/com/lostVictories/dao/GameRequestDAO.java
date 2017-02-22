@@ -42,7 +42,7 @@ public class GameRequestDAO {
 		if (!res.isExists()) {
 			final CreateIndexRequestBuilder createIndexRequestBuilder = adminClient.prepareCreate(indexName);
 			
-		    XContentBuilder builder = XContentFactory.jsonBuilder().startObject().startObject(indexName).startObject("properties");
+		    XContentBuilder builder = XContentFactory.jsonBuilder().startObject().startObject("properties");
 		    builder.startObject("gameName")
 	        	.field("type", "string")
 	        	.field("index", "not_analyzed")

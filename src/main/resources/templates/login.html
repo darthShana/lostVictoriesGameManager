@@ -1,47 +1,56 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-    <head>
-        <title>Spring Security Example </title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        
-        <script type="text/javascript">
-	      var verifyCallback = function(response) {
-	        $('#recaptchaResponse').val(response);
-	      };
-	      
-	      var onloadCallback = function() {	        
-	        grecaptcha.render('example3', {
-	          'sitekey' : '6LeQ0xUTAAAAAE09a_8Aoqvmnn2_r3tmtRAxd6vL',
-	          'callback' : verifyCallback,
-	        });
-	      };
-    	</script>
-    </head>
-    <body>
-        <div th:if="${param.error}">
-            Invalid username and password.
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>The Lost Victories - Home</title>
+	<meta http-equiv="content-type" content="text/html;charset=utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"></meta>
+    <link href='https://fonts.googleapis.com/css?family=Playfair+Display:400,400italic|Oswald:400,700,300' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/css/lostvictories.css" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?onload=recaptchaLoaded&amp;render=explicit" async='async' defer='defer'></script>
+</head>
+
+<body class="home blog container-fluid">
+    <div class = "wrap_content_site">
+        <header>
+            <div class="duble_line"></div>
+            <div class="login_join_section col-sm-12">
+                <div class="width-13 login_section" id="login-logout-section">
+                    <a href="#">Login</a>
+                </div>
+                <div class="width-74 text-center logo">
+                    <a href="/" >
+                        <img src="http://www.lostvictories.com/wp-content/themes/lostvictories/img/logo_sign.png"></img>
+                        Lost Victories					</a>
+                </div>
+                <div class="width-13 col-sm-2 join_now_section hidden-xs">
+                    <a href="#">
+                        Download
+                    </a>
+                </div>
+            </div>
+        </header>
+        <div class="container">
+            <div id="app">
+            </div>
         </div>
-        <div th:if="${param.logout}">
-            You have been logged out.
-        </div>
-        <form action="/login" method="post">
-            <div><label> User Name : <input type="text" name="username"/> </label></div>
-            <div><label> Password: <input type="password" name="password"/> </label></div>
-            <div><input type="submit" value="Sign In"/></div>
-        </form>
-        
-        <form action="/createFormUser" method="post">
-            <div><label> User Name : <input type="text" name="username"/> </label></div>
-            <div><label> Email: <input type="text" name="email"/> </label></div>
-            <div><label> Password: <input type="password" name="password1"/> </label></div>
-            <div><label> Repeat Password: <input type="password" name="password2"/> </label></div>
-            <div id="example3"></div>
-            <input type="hidden" id="recaptchaResponse" name="recaptchaResponse"/>
-            <div><input type="submit" value="Register"/></div>
-        </form>
-        <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&amp;render=explicit"
-        async="async" defer="defer">
-    </script>
-    </body>
+        <footer>
+            <div class="single_line"></div>
+            <div class="copyright">Copyright 2016 War Game </div>
+        </footer>
+    </div>
+
+  <script>
+    var domain = 'https://api.lostvictories.com';
+//    var domain = 'http://localhost:8080/lostVictoriesGameManager';
+  </script>
+  <script src="https://kenwheeler.github.io/mcfly/McFly.js"></script>
+  <script src="js/bundle.js"></script>
+
+</body>
+
 </html>

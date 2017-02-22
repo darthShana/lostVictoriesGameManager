@@ -1,0 +1,1491 @@
+/* `XHTML, HTML4, HTML5 Reset
+----------------------------------------------------------------------------------------------------*/
+/* line 3, ../sass/_reset.scss */
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 8, ../sass/_reset.scss */
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+
+/* line 103, ../sass/_reset.scss */
+a,
+abbr,
+acronym,
+address,
+applet,
+article,
+aside,
+audio,
+b,
+big,
+blockquote,
+body,
+canvas,
+caption,
+center,
+cite,
+code,
+dd,
+del,
+details,
+dfn,
+dialog,
+div,
+dl,
+dt,
+em,
+embed,
+fieldset,
+figcaption,
+figure,
+font,
+footer,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+header,
+hgroup,
+hr,
+html,
+i,
+iframe,
+img,
+ins,
+kbd,
+label,
+legend,
+li,
+main,
+mark,
+menu,
+meter,
+nav,
+object,
+ol,
+output,
+p,
+pre,
+progress,
+q,
+rp,
+rt,
+ruby,
+s,
+samp,
+section,
+small,
+span,
+strike,
+strong,
+sub,
+summary,
+sup,
+table,
+tbody,
+td,
+tfoot,
+th,
+thead,
+time,
+tr,
+tt,
+u,
+ul,
+var,
+video,
+xmp {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 100%;
+}
+
+/* line 125, ../sass/_reset.scss */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section {
+  /*
+    Override the default (display: inline) for
+    browsers that do not recognize HTML5 tags.
+  
+    IE8 (and lower) requires a shiv:
+    http://ejohn.org/blog/html5-shiv
+  */
+  display: block;
+}
+
+/* line 137, ../sass/_reset.scss */
+b,
+strong {
+  /*
+    Makes browsers agree.
+    IE + Opera = font-weight: bold.
+    Gecko + WebKit = font-weight: bolder.
+  */
+  font-weight: bold;
+}
+
+/* line 146, ../sass/_reset.scss */
+img {
+  color: transparent;
+  font-size: 0;
+  vertical-align: middle;
+  /*
+    For IE.
+    http://css-tricks.com/ie-fix-bicubic-scaling-for-images
+  */
+  -ms-interpolation-mode: bicubic;
+}
+
+/* line 158, ../sass/_reset.scss */
+ol,
+ul {
+  list-style: none;
+}
+
+/* line 162, ../sass/_reset.scss */
+li {
+  /*
+    For IE6 + IE7:
+  
+    "display: list-item" keeps bullets from
+    disappearing if hasLayout is triggered.
+  */
+  display: list-item;
+}
+
+/* line 172, ../sass/_reset.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* line 179, ../sass/_reset.scss */
+th,
+td,
+caption {
+  font-weight: normal;
+  vertical-align: top;
+  text-align: left;
+}
+
+/* line 185, ../sass/_reset.scss */
+q {
+  quotes: none;
+}
+
+/* line 190, ../sass/_reset.scss */
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+/* line 197, ../sass/_reset.scss */
+sub,
+sup,
+small {
+  font-size: 75%;
+}
+
+/* line 202, ../sass/_reset.scss */
+sub,
+sup {
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+/* line 208, ../sass/_reset.scss */
+sub {
+  bottom: -0.25em;
+}
+
+/* line 212, ../sass/_reset.scss */
+sup {
+  top: -0.5em;
+}
+
+/* line 216, ../sass/_reset.scss */
+svg {
+  /*
+    For IE9. Without, occasionally draws shapes
+    outside the boundaries of <svg> rectangle.
+  */
+  overflow: hidden;
+}
+
+/* line 14, ../sass/_mixins.scss */
+.right-align {
+  text-align: right;
+}
+
+/* line 16, ../sass/_mixins.scss */
+.h4-font, h4 {
+  font-family: "Oswald", sans-serif;
+  color: #222222;
+  font-size: 1.3rem;
+  font-weight: 300;
+}
+
+/* line 22, ../sass/_mixins.scss */
+.body-font {
+  font-family: "Oswald", sans-serif;
+  color: #222222;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+/* line 30, ../sass/_mixins.scss */
+.paper-gradient, body {
+  background: #fffde4;
+  /* For browsers that do not support gradients */
+  background: -webkit-radial-gradient(#fffef0, #fffde4, #b29b76);
+  /* Safari 5.1 to 6.0 */
+  background: -o-radial-gradient(#fffef0, #fffde4, #b29b76);
+  /* For Opera 11.6 to 12.0 */
+  background: -moz-radial-gradient(#fffef0, #fffde4, #b29b76);
+  /* For Firefox 3.6 to 15 */
+  background: radial-gradient(#fffef0, #fffde4, #b29b76);
+  /* Standard syntax */
+}
+
+/*
+  960 Grid System ~ Core CSS.
+  Learn more ~ http://960.gs/
+
+  Licensed under GPL and MIT.
+*/
+/*
+  Forces backgrounds to span full width,
+  even if there is horizontal scrolling.
+  Increase this if your layout is wider.
+
+  Note: IE6 works fine without this fix.
+*/
+/* `Container
+----------------------------------------------------------------------------------------------------*/
+/* line 24, ../sass/_grid.scss */
+.container_12,
+.container_16 {
+  margin-left: auto;
+  margin-right: auto;
+  width: 960px;
+  max-width: 94%;
+}
+
+/* line 39, ../sass/_grid.scss */
+.container_12 .grid_3,
+.container_16 .grid_4 {
+  width: 24%;
+}
+@media (max-width: 60em) {
+  /* line 39, ../sass/_grid.scss */
+  .container_12 .grid_3,
+  .container_16 .grid_4 {
+    width: 48%;
+  }
+}
+@media (max-width: 30em) {
+  /* line 39, ../sass/_grid.scss */
+  .container_12 .grid_3,
+  .container_16 .grid_4 {
+    width: 100%;
+  }
+}
+
+/* line 47, ../sass/_grid.scss */
+.container_12 .grid_6,
+.container_16 .grid_8 {
+  width: 46%;
+}
+@media (max-width: 60em) {
+  /* line 47, ../sass/_grid.scss */
+  .container_12 .grid_6,
+  .container_16 .grid_8 {
+    width: 48%;
+  }
+}
+@media (max-width: 30em) {
+  /* line 47, ../sass/_grid.scss */
+  .container_12 .grid_6,
+  .container_16 .grid_8 {
+    width: 100%;
+  }
+}
+
+/* line 55, ../sass/_grid.scss */
+.container_12 .grid_9,
+.container_16 .grid_12 {
+  width: 700px;
+}
+
+/* line 60, ../sass/_grid.scss */
+.container_12 .grid_12,
+.container_16 .grid_16 {
+  width: 100%;
+}
+
+/* `Grid >> Global
+----------------------------------------------------------------------------------------------------*/
+/* line 83, ../sass/_grid.scss */
+.grid_1,
+.grid_2,
+.grid_3,
+.grid_4,
+.grid_5,
+.grid_6,
+.grid_7,
+.grid_8,
+.grid_9,
+.grid_10,
+.grid_11,
+.grid_12,
+.grid_13,
+.grid_14,
+.grid_15,
+.grid_16 {
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 0.8%;
+  padding: 10px 0;
+}
+
+/* line 105, ../sass/_grid.scss */
+.push_1, .pull_1,
+.push_2, .pull_2,
+.push_3, .pull_3,
+.push_4, .pull_4,
+.push_5, .pull_5,
+.push_6, .pull_6,
+.push_7, .pull_7,
+.push_8, .pull_8,
+.push_9, .pull_9,
+.push_10, .pull_10,
+.push_11, .pull_11,
+.push_12, .pull_12,
+.push_13, .pull_13,
+.push_14, .pull_14,
+.push_15, .pull_15 {
+  position: relative;
+}
+
+/* `Grid >> Children (Alpha ~ First, Omega ~ Last)
+----------------------------------------------------------------------------------------------------*/
+/* line 112, ../sass/_grid.scss */
+.alpha {
+  margin-left: 0;
+}
+
+/* line 116, ../sass/_grid.scss */
+.omega {
+  margin-right: 0;
+}
+
+/* `Grid >> 12 Columns
+----------------------------------------------------------------------------------------------------*/
+/* line 124, ../sass/_grid.scss */
+.container_12 .grid_1 {
+  width: 60px;
+  width: 9%;
+}
+@media (max-width: 60em) {
+  /* line 124, ../sass/_grid.scss */
+  .container_12 .grid_1 {
+    width: 8%;
+  }
+}
+@media (max-width: 40em) {
+  /* line 124, ../sass/_grid.scss */
+  .container_12 .grid_1 {
+    width: 12%;
+  }
+}
+@media (max-width: 30em) {
+  /* line 124, ../sass/_grid.scss */
+  .container_12 .grid_1 {
+    width: 8%;
+  }
+}
+@media (max-width: 20em) {
+  /* line 124, ../sass/_grid.scss */
+  .container_12 .grid_1 {
+    width: 7%;
+  }
+}
+/* line 132, ../sass/_grid.scss */
+.container_12 .grid_2 {
+  width: 140px;
+}
+/* line 135, ../sass/_grid.scss */
+.container_12 .grid_4 {
+  width: 300px;
+}
+/* line 138, ../sass/_grid.scss */
+.container_12 .grid_5 {
+  width: 380px;
+}
+/* line 141, ../sass/_grid.scss */
+.container_12 .grid_7 {
+  width: 540px;
+}
+/* line 144, ../sass/_grid.scss */
+.container_12 .grid_8 {
+  width: 620px;
+}
+/* line 147, ../sass/_grid.scss */
+.container_12 .grid_10 {
+  width: 780px;
+  width: 77%;
+}
+@media (max-width: 60em) {
+  /* line 147, ../sass/_grid.scss */
+  .container_12 .grid_10 {
+    width: 77%;
+  }
+}
+@media (max-width: 40em) {
+  /* line 147, ../sass/_grid.scss */
+  .container_12 .grid_10 {
+    width: 70%;
+  }
+}
+@media (max-width: 30em) {
+  /* line 147, ../sass/_grid.scss */
+  .container_12 .grid_10 {
+    width: 70%;
+  }
+}
+@media (max-width: 20em) {
+  /* line 147, ../sass/_grid.scss */
+  .container_12 .grid_10 {
+    width: 75%;
+  }
+}
+/* line 155, ../sass/_grid.scss */
+.container_12 .grid_11 {
+  width: 860px;
+}
+
+/* `Grid >> 16 Columns
+----------------------------------------------------------------------------------------------------*/
+/* line 165, ../sass/_grid.scss */
+.container_16 .grid_1 {
+  width: 40px;
+}
+/* line 168, ../sass/_grid.scss */
+.container_16 .grid_2 {
+  width: 100px;
+}
+/* line 171, ../sass/_grid.scss */
+.container_16 .grid_3 {
+  width: 160px;
+}
+/* line 174, ../sass/_grid.scss */
+.container_16 .grid_5 {
+  width: 280px;
+}
+/* line 177, ../sass/_grid.scss */
+.container_16 .grid_6 {
+  width: 340px;
+}
+/* line 180, ../sass/_grid.scss */
+.container_16 .grid_7 {
+  width: 400px;
+}
+/* line 183, ../sass/_grid.scss */
+.container_16 .grid_9 {
+  width: 520px;
+}
+/* line 186, ../sass/_grid.scss */
+.container_16 .grid_10 {
+  width: 580px;
+}
+/* line 189, ../sass/_grid.scss */
+.container_16 .grid_11 {
+  width: 640px;
+}
+/* line 192, ../sass/_grid.scss */
+.container_16 .grid_13 {
+  width: 760px;
+}
+/* line 195, ../sass/_grid.scss */
+.container_16 .grid_14 {
+  width: 820px;
+}
+/* line 198, ../sass/_grid.scss */
+.container_16 .grid_15 {
+  width: 880px;
+}
+
+/* `Prefix Extra Space >> 12 Columns
+----------------------------------------------------------------------------------------------------*/
+/* line 207, ../sass/_grid.scss */
+.container_12 .prefix_1 {
+  padding-left: 80px;
+}
+/* line 210, ../sass/_grid.scss */
+.container_12 .prefix_2 {
+  padding-left: 160px;
+}
+/* line 213, ../sass/_grid.scss */
+.container_12 .prefix_4 {
+  padding-left: 320px;
+}
+/* line 216, ../sass/_grid.scss */
+.container_12 .prefix_5 {
+  padding-left: 400px;
+}
+/* line 219, ../sass/_grid.scss */
+.container_12 .prefix_7 {
+  padding-left: 560px;
+}
+/* line 222, ../sass/_grid.scss */
+.container_12 .prefix_8 {
+  padding-left: 640px;
+}
+/* line 225, ../sass/_grid.scss */
+.container_12 .prefix_10 {
+  padding-left: 800px;
+}
+/* line 228, ../sass/_grid.scss */
+.container_12 .prefix_11 {
+  padding-left: 880px;
+}
+
+/* `Prefix Extra Space >> 16 Columns
+----------------------------------------------------------------------------------------------------*/
+/* line 237, ../sass/_grid.scss */
+.container_16 .prefix_1 {
+  padding-left: 60px;
+}
+/* line 240, ../sass/_grid.scss */
+.container_16 .prefix_2 {
+  padding-left: 120px;
+}
+/* line 243, ../sass/_grid.scss */
+.container_16 .prefix_3 {
+  padding-left: 180px;
+}
+/* line 246, ../sass/_grid.scss */
+.container_16 .prefix_5 {
+  padding-left: 300px;
+}
+/* line 249, ../sass/_grid.scss */
+.container_16 .prefix_6 {
+  padding-left: 360px;
+}
+/* line 252, ../sass/_grid.scss */
+.container_16 .prefix_7 {
+  padding-left: 420px;
+}
+/* line 255, ../sass/_grid.scss */
+.container_16 .prefix_9 {
+  padding-left: 540px;
+}
+/* line 258, ../sass/_grid.scss */
+.container_16 .prefix_10 {
+  padding-left: 600px;
+}
+/* line 261, ../sass/_grid.scss */
+.container_16 .prefix_11 {
+  padding-left: 660px;
+}
+/* line 264, ../sass/_grid.scss */
+.container_16 .prefix_13 {
+  padding-left: 780px;
+}
+/* line 267, ../sass/_grid.scss */
+.container_16 .prefix_14 {
+  padding-left: 840px;
+}
+/* line 270, ../sass/_grid.scss */
+.container_16 .prefix_15 {
+  padding-left: 900px;
+}
+
+/* `Suffix Extra Space >> Global
+----------------------------------------------------------------------------------------------------*/
+/* line 280, ../sass/_grid.scss */
+.container_12 .suffix_3,
+.container_16 .suffix_4 {
+  padding-right: 240px;
+}
+
+/* line 285, ../sass/_grid.scss */
+.container_12 .suffix_6,
+.container_16 .suffix_8 {
+  padding-right: 480px;
+}
+
+/* line 290, ../sass/_grid.scss */
+.container_12 .suffix_9,
+.container_16 .suffix_12 {
+  padding-right: 720px;
+}
+
+/* `Suffix Extra Space >> 12 Columns
+----------------------------------------------------------------------------------------------------*/
+/* line 297, ../sass/_grid.scss */
+.container_12 .suffix_1 {
+  padding-right: 80px;
+}
+
+/* line 301, ../sass/_grid.scss */
+.container_12 .suffix_2 {
+  padding-right: 160px;
+}
+
+/* line 305, ../sass/_grid.scss */
+.container_12 .suffix_4 {
+  padding-right: 320px;
+}
+
+/* line 309, ../sass/_grid.scss */
+.container_12 .suffix_5 {
+  padding-right: 400px;
+}
+
+/* line 313, ../sass/_grid.scss */
+.container_12 .suffix_7 {
+  padding-right: 560px;
+}
+
+/* line 317, ../sass/_grid.scss */
+.container_12 .suffix_8 {
+  padding-right: 640px;
+}
+
+/* line 321, ../sass/_grid.scss */
+.container_12 .suffix_10 {
+  padding-right: 800px;
+}
+
+/* line 325, ../sass/_grid.scss */
+.container_12 .suffix_11 {
+  padding-right: 880px;
+}
+
+/* `Suffix Extra Space >> 16 Columns
+----------------------------------------------------------------------------------------------------*/
+/* line 332, ../sass/_grid.scss */
+.container_16 .suffix_1 {
+  padding-right: 60px;
+}
+
+/* line 336, ../sass/_grid.scss */
+.container_16 .suffix_2 {
+  padding-right: 120px;
+}
+
+/* line 340, ../sass/_grid.scss */
+.container_16 .suffix_3 {
+  padding-right: 180px;
+}
+
+/* line 344, ../sass/_grid.scss */
+.container_16 .suffix_5 {
+  padding-right: 300px;
+}
+
+/* line 348, ../sass/_grid.scss */
+.container_16 .suffix_6 {
+  padding-right: 360px;
+}
+
+/* line 352, ../sass/_grid.scss */
+.container_16 .suffix_7 {
+  padding-right: 420px;
+}
+
+/* line 356, ../sass/_grid.scss */
+.container_16 .suffix_9 {
+  padding-right: 540px;
+}
+
+/* line 360, ../sass/_grid.scss */
+.container_16 .suffix_10 {
+  padding-right: 600px;
+}
+
+/* line 364, ../sass/_grid.scss */
+.container_16 .suffix_11 {
+  padding-right: 660px;
+}
+
+/* line 368, ../sass/_grid.scss */
+.container_16 .suffix_13 {
+  padding-right: 780px;
+}
+
+/* line 372, ../sass/_grid.scss */
+.container_16 .suffix_14 {
+  padding-right: 840px;
+}
+
+/* line 376, ../sass/_grid.scss */
+.container_16 .suffix_15 {
+  padding-right: 900px;
+}
+
+/* `Push Space >> Global
+----------------------------------------------------------------------------------------------------*/
+/* line 384, ../sass/_grid.scss */
+.container_12 .push_3,
+.container_16 .push_4 {
+  left: 240px;
+}
+
+/* line 389, ../sass/_grid.scss */
+.container_12 .push_6,
+.container_16 .push_8 {
+  left: 480px;
+}
+
+/* line 394, ../sass/_grid.scss */
+.container_12 .push_9,
+.container_16 .push_12 {
+  left: 720px;
+}
+
+/* `Push Space >> 12 Columns
+----------------------------------------------------------------------------------------------------*/
+/* line 401, ../sass/_grid.scss */
+.container_12 .push_1 {
+  left: 80px;
+}
+
+/* line 405, ../sass/_grid.scss */
+.container_12 .push_2 {
+  left: 160px;
+}
+
+/* line 409, ../sass/_grid.scss */
+.container_12 .push_4 {
+  left: 320px;
+}
+
+/* line 413, ../sass/_grid.scss */
+.container_12 .push_5 {
+  left: 400px;
+}
+
+/* line 417, ../sass/_grid.scss */
+.container_12 .push_7 {
+  left: 560px;
+}
+
+/* line 421, ../sass/_grid.scss */
+.container_12 .push_8 {
+  left: 640px;
+}
+
+/* line 425, ../sass/_grid.scss */
+.container_12 .push_10 {
+  left: 800px;
+}
+
+/* line 429, ../sass/_grid.scss */
+.container_12 .push_11 {
+  left: 880px;
+}
+
+/* `Push Space >> 16 Columns
+----------------------------------------------------------------------------------------------------*/
+/* line 436, ../sass/_grid.scss */
+.container_16 .push_1 {
+  left: 60px;
+}
+
+/* line 440, ../sass/_grid.scss */
+.container_16 .push_2 {
+  left: 120px;
+}
+
+/* line 444, ../sass/_grid.scss */
+.container_16 .push_3 {
+  left: 180px;
+}
+
+/* line 448, ../sass/_grid.scss */
+.container_16 .push_5 {
+  left: 300px;
+}
+
+/* line 452, ../sass/_grid.scss */
+.container_16 .push_6 {
+  left: 360px;
+}
+
+/* line 456, ../sass/_grid.scss */
+.container_16 .push_7 {
+  left: 420px;
+}
+
+/* line 460, ../sass/_grid.scss */
+.container_16 .push_9 {
+  left: 540px;
+}
+
+/* line 464, ../sass/_grid.scss */
+.container_16 .push_10 {
+  left: 600px;
+}
+
+/* line 468, ../sass/_grid.scss */
+.container_16 .push_11 {
+  left: 660px;
+}
+
+/* line 472, ../sass/_grid.scss */
+.container_16 .push_13 {
+  left: 780px;
+}
+
+/* line 476, ../sass/_grid.scss */
+.container_16 .push_14 {
+  left: 840px;
+}
+
+/* line 480, ../sass/_grid.scss */
+.container_16 .push_15 {
+  left: 900px;
+}
+
+/* `Pull Space >> Global
+----------------------------------------------------------------------------------------------------*/
+/* line 488, ../sass/_grid.scss */
+.container_12 .pull_3,
+.container_16 .pull_4 {
+  left: -240px;
+}
+
+/* line 493, ../sass/_grid.scss */
+.container_12 .pull_6,
+.container_16 .pull_8 {
+  left: -480px;
+}
+
+/* line 498, ../sass/_grid.scss */
+.container_12 .pull_9,
+.container_16 .pull_12 {
+  left: -720px;
+}
+
+/* `Pull Space >> 12 Columns
+----------------------------------------------------------------------------------------------------*/
+/* line 505, ../sass/_grid.scss */
+.container_12 .pull_1 {
+  left: -80px;
+}
+
+/* line 509, ../sass/_grid.scss */
+.container_12 .pull_2 {
+  left: -160px;
+}
+
+/* line 513, ../sass/_grid.scss */
+.container_12 .pull_4 {
+  left: -320px;
+}
+
+/* line 517, ../sass/_grid.scss */
+.container_12 .pull_5 {
+  left: -400px;
+}
+
+/* line 521, ../sass/_grid.scss */
+.container_12 .pull_7 {
+  left: -560px;
+}
+
+/* line 525, ../sass/_grid.scss */
+.container_12 .pull_8 {
+  left: -640px;
+}
+
+/* line 529, ../sass/_grid.scss */
+.container_12 .pull_10 {
+  left: -800px;
+}
+
+/* line 533, ../sass/_grid.scss */
+.container_12 .pull_11 {
+  left: -880px;
+}
+
+/* `Pull Space >> 16 Columns
+----------------------------------------------------------------------------------------------------*/
+/* line 540, ../sass/_grid.scss */
+.container_16 .pull_1 {
+  left: -60px;
+}
+
+/* line 544, ../sass/_grid.scss */
+.container_16 .pull_2 {
+  left: -120px;
+}
+
+/* line 548, ../sass/_grid.scss */
+.container_16 .pull_3 {
+  left: -180px;
+}
+
+/* line 552, ../sass/_grid.scss */
+.container_16 .pull_5 {
+  left: -300px;
+}
+
+/* line 556, ../sass/_grid.scss */
+.container_16 .pull_6 {
+  left: -360px;
+}
+
+/* line 560, ../sass/_grid.scss */
+.container_16 .pull_7 {
+  left: -420px;
+}
+
+/* line 564, ../sass/_grid.scss */
+.container_16 .pull_9 {
+  left: -540px;
+}
+
+/* line 568, ../sass/_grid.scss */
+.container_16 .pull_10 {
+  left: -600px;
+}
+
+/* line 572, ../sass/_grid.scss */
+.container_16 .pull_11 {
+  left: -660px;
+}
+
+/* line 576, ../sass/_grid.scss */
+.container_16 .pull_13 {
+  left: -780px;
+}
+
+/* line 580, ../sass/_grid.scss */
+.container_16 .pull_14 {
+  left: -840px;
+}
+
+/* line 584, ../sass/_grid.scss */
+.container_16 .pull_15 {
+  left: -900px;
+}
+
+/* `Clear Floated Elements
+----------------------------------------------------------------------------------------------------*/
+/* http://sonspring.com/journal/clearing-floats */
+/* line 593, ../sass/_grid.scss */
+.clear {
+  clear: both;
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  width: 0;
+  height: 0;
+}
+
+/* http://www.yuiblog.com/blog/2010/09/27/clearfix-reloaded-overflowhidden-demystified */
+/* line 609, ../sass/_grid.scss */
+.clearfix:before,
+.clearfix:after,
+.container_12:before,
+.container_12:after,
+.container_16:before,
+.container_16:after {
+  content: ' ';
+  display: block;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0;
+  line-height: 0;
+  width: 0;
+  height: 0;
+}
+
+/* line 622, ../sass/_grid.scss */
+.clearfix:after,
+.container_12:after,
+.container_16:after {
+  clear: both;
+}
+
+/*
+  The following zoom:1 rule is specifically for IE6 + IE7.
+  Move to separate stylesheet if invalid CSS is a problem.
+*/
+/* line 633, ../sass/_grid.scss */
+.clearfix,
+.container_12,
+.container_16 {
+  zoom: 1;
+}
+
+/* line 4, ../sass/_home.scss */
+h1 {
+  font-family: "Oswald", sans-serif;
+  color: #222222;
+  font-size: 7rem;
+  text-align: center;
+  font-weight: 700;
+  line-height: 1.1;
+}
+@media (max-width: 70em) {
+  /* line 4, ../sass/_home.scss */
+  h1 {
+    font-size: 5rem;
+    line-height: 1;
+  }
+}
+@media (max-width: 60em) {
+  /* line 4, ../sass/_home.scss */
+  h1 {
+    font-size: 4.5rem;
+  }
+}
+@media (max-width: 40em) {
+  /* line 4, ../sass/_home.scss */
+  h1 {
+    font-size: 3rem;
+  }
+}
+@media (max-width: 30em) {
+  /* line 4, ../sass/_home.scss */
+  h1 {
+    font-size: 2.3rem;
+  }
+}
+@media (max-width: 20em) {
+  /* line 4, ../sass/_home.scss */
+  h1 {
+    font-size: 2.1rem;
+  }
+}
+
+/* line 17, ../sass/_home.scss */
+h2 {
+  font-family: "Playfair Display", serif;
+  color: #222222;
+  line-height: 1;
+  font-size: 3rem;
+  font-weight: 700;
+  padding-bottom: 10px;
+}
+
+/* line 25, ../sass/_home.scss */
+h3 {
+  font-family: "Oswald", sans-serif;
+  color: #222222;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+/* line 38, ../sass/_home.scss */
+h3.sm-font, h3.m-font, h3.ml-font, h3.l-font {
+  line-height: 1;
+  padding-bottom: 10px;
+}
+
+/* line 40, ../sass/_home.scss */
+h3.sm-font {
+  font-size: 1.6rem;
+}
+@media (max-width: 60em) {
+  /* line 40, ../sass/_home.scss */
+  h3.sm-font {
+    font-size: 1.3rem;
+  }
+}
+@media (max-width: 30em) {
+  /* line 40, ../sass/_home.scss */
+  h3.sm-font {
+    font-size: 1.2rem;
+  }
+}
+
+/* line 44, ../sass/_home.scss */
+h3.m-font {
+  font-size: 2rem;
+  font-family: "Playfair Display", serif;
+}
+@media (max-width: 60em) {
+  /* line 44, ../sass/_home.scss */
+  h3.m-font {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 30em) {
+  /* line 44, ../sass/_home.scss */
+  h3.m-font {
+    font-size: 1.7rem;
+  }
+}
+
+/* line 48, ../sass/_home.scss */
+h3.ml-font {
+  font-size: 3rem;
+  font-family: "Playfair Display", serif;
+}
+@media (max-width: 70em) {
+  /* line 48, ../sass/_home.scss */
+  h3.ml-font {
+    font-size: 2.5rem;
+  }
+}
+@media (max-width: 60em) {
+  /* line 48, ../sass/_home.scss */
+  h3.ml-font {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 40em) {
+  /* line 48, ../sass/_home.scss */
+  h3.ml-font {
+    font-size: 1.8rem;
+  }
+}
+@media (max-width: 30em) {
+  /* line 48, ../sass/_home.scss */
+  h3.ml-font {
+    font-size: 1.3rem;
+  }
+}
+
+/* line 54, ../sass/_home.scss */
+h3.l-font {
+  font-size: 4rem;
+}
+@media (max-width: 70em) {
+  /* line 54, ../sass/_home.scss */
+  h3.l-font {
+    font-size: 2.5rem;
+  }
+}
+@media (max-width: 40em) {
+  /* line 54, ../sass/_home.scss */
+  h3.l-font {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 30em) {
+  /* line 54, ../sass/_home.scss */
+  h3.l-font {
+    font-size: 1.8rem;
+  }
+}
+
+/* line 59, ../sass/_home.scss */
+p {
+  font-family: "Playfair Display", serif;
+  color: #222222;
+  font-size: 1rem;
+  font-weight: 100;
+}
+@media (max-width: 60em) {
+  /* line 59, ../sass/_home.scss */
+  p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 20em) {
+  /* line 68, ../sass/_home.scss */
+  header .grid_1:first-child {
+    width: 0;
+  }
+}
+
+/* line 71, ../sass/_home.scss */
+.bold-header {
+  text-align: center;
+  margin: 0px;
+  line-height: 1;
+  overflow: hidden;
+  padding: 10px 0px 0px;
+}
+/* line 77, ../sass/_home.scss */
+.bold-header h3 {
+  text-transform: uppercase;
+  font-size: 3rem;
+  -webkit-transform: scale(3, 1);
+  /* Safari and Chrome */
+  -moz-transform: scale(3, 1);
+  /* Firefox */
+  -ms-transform: scale(3, 1);
+  /* IE 9 */
+  -o-transform: scale(3, 1);
+  /* Opera */
+  transform: scale(3, 1);
+  /* W3C */
+}
+@media (max-width: 70em) {
+  /* line 77, ../sass/_home.scss */
+  .bold-header h3 {
+    font-size: 2.3rem;
+  }
+}
+@media (max-width: 60em) {
+  /* line 77, ../sass/_home.scss */
+  .bold-header h3 {
+    font-size: 2rem;
+  }
+}
+@media (max-width: 40em) {
+  /* line 77, ../sass/_home.scss */
+  .bold-header h3 {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 30em) {
+  /* line 77, ../sass/_home.scss */
+  .bold-header h3 {
+    font-size: 1rem;
+  }
+}
+
+/* line 92, ../sass/_home.scss */
+.main {
+  margin-bottom: 20px;
+}
+
+/* line 93, ../sass/_home.scss */
+.newspaper-name {
+  margin: 10px 0;
+  padding: 0;
+  text-align: center;
+}
+@media (max-width: 60em) {
+  /* line 93, ../sass/_home.scss */
+  .newspaper-name {
+    margin: 10px 0 5px;
+  }
+}
+@media (max-width: 40em) {
+  /* line 93, ../sass/_home.scss */
+  .newspaper-name {
+    margin: 5px 0;
+  }
+}
+/* line 99, ../sass/_home.scss */
+.newspaper-name h4 {
+  font-size: 4rem;
+  font-family: "Playfair Display", serif;
+  line-height: 1;
+}
+@media (max-width: 70em) {
+  /* line 99, ../sass/_home.scss */
+  .newspaper-name h4 {
+    font-size: 3rem;
+  }
+}
+@media (max-width: 60em) {
+  /* line 99, ../sass/_home.scss */
+  .newspaper-name h4 {
+    font-size: 2.2rem;
+    padding-top: 3px;
+  }
+}
+@media (max-width: 40em) {
+  /* line 99, ../sass/_home.scss */
+  .newspaper-name h4 {
+    font-size: 1.8rem;
+  }
+}
+@media (max-width: 30em) {
+  /* line 99, ../sass/_home.scss */
+  .newspaper-name h4 {
+    font-size: 1.2rem;
+  }
+}
+
+/* line 109, ../sass/_home.scss */
+.border.details-outter {
+  padding: 0;
+  border-top: 2px solid #222222;
+  border-bottom: 2px solid #222222;
+}
+/* line 113, ../sass/_home.scss */
+.border.details-outter .grid_6 {
+  padding: 0;
+  width: 48%;
+}
+@media (max-width: 30em) {
+  /* line 113, ../sass/_home.scss */
+  .border.details-outter .grid_6 {
+    width: 47.5%;
+  }
+}
+@media (max-width: 70em) {
+  /* line 116, ../sass/_home.scss */
+  .border.details-outter p {
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 40em) {
+  /* line 116, ../sass/_home.scss */
+  .border.details-outter p {
+    font-size: 0.7rem;
+  }
+}
+
+/* line 121, ../sass/_home.scss */
+.login {
+  text-align: right;
+  margin-top: 10px;
+}
+@media (max-width: 60em) {
+  /* line 121, ../sass/_home.scss */
+  .login {
+    margin-top: 5px;
+  }
+}
+@media (max-width: 40em) {
+  /* line 121, ../sass/_home.scss */
+  .login {
+    margin-top: 0;
+  }
+}
+@media (max-width: 30em) {
+  /* line 121, ../sass/_home.scss */
+  .login {
+    padding: 6px 0 0;
+  }
+}
+@media (max-width: 20em) {
+  /* line 121, ../sass/_home.scss */
+  .login {
+    padding: 4px 0 0 0;
+  }
+}
+/* line 128, ../sass/_home.scss */
+.login a {
+  text-decoration: none;
+  background-color: #222;
+  padding: 0px 5px;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 30px;
+  font-size: 2rem;
+  line-height: 0;
+  color: #b29b76;
+  text-decoration: none;
+  font-family: "Oswald", sans-serif;
+}
+@media (max-width: 40em) {
+  /* line 128, ../sass/_home.scss */
+  .login a {
+    font-size: 1.3rem;
+    margin-top: 0;
+  }
+}
+/* line 142, ../sass/_home.scss */
+.login a:hover, .login a:active, .login a:focus {
+  color: #fffde4;
+}
+@media (max-width: 60em) {
+  /* line 128, ../sass/_home.scss */
+  .login a {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 30em) {
+  /* line 128, ../sass/_home.scss */
+  .login a {
+    font-size: 1rem;
+  }
+}
+
+/* line 147, ../sass/_home.scss */
+.border {
+  border-top: 1px solid #222222;
+}
+
+/* line 150, ../sass/_home.scss */
+.large-img {
+  height: 300px;
+  overflow: hidden;
+  border: 1px solid #222222;
+}
+@media (max-width: 90em) {
+  /* line 150, ../sass/_home.scss */
+  .large-img {
+    border: 1px solid blue;
+  }
+}
+@media (max-width: 80em) {
+  /* line 150, ../sass/_home.scss */
+  .large-img {
+    border: 1px solid aqua;
+  }
+}
+@media (max-width: 70em) {
+  /* line 150, ../sass/_home.scss */
+  .large-img {
+    border: 1px solid green;
+  }
+}
+@media (max-width: 60em) {
+  /* line 150, ../sass/_home.scss */
+  .large-img {
+    border: 1px solid yellowgreen;
+    height: 280px;
+    margin-bottom: 20px;
+  }
+}
+@media (max-width: 40em) {
+  /* line 150, ../sass/_home.scss */
+  .large-img {
+    border: 1px solid yellow;
+  }
+}
+@media (max-width: 30em) {
+  /* line 150, ../sass/_home.scss */
+  .large-img {
+    border: 1px solid orange;
+  }
+}
+@media (max-width: 20em) {
+  /* line 150, ../sass/_home.scss */
+  .large-img {
+    border: 1px solid red;
+  }
+}
+
+/* line 162, ../sass/_home.scss */
+.small-img {
+  height: 200px;
+  overflow: hidden;
+  border: 1px solid #222222;
+}
+
+@media (max-width: 40em) {
+  /* line 169, ../sass/_home.scss */
+  .container_12 .grid_3.mobile-full-width, .container_12 .grid_6.mobile-full-width {
+    width: 100%;
+  }
+}

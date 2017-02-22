@@ -1,0 +1,207 @@
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    background-attachment: fixed;
+}
+
+header {
+    overflow: auto;
+}
+
+#app {
+    padding: 0;
+}
+
+.wrap_content_site {
+    position: relative;
+    min-height: 100vh;
+}
+
+.wrap_content_site > footer {
+    margin-top: 100px;
+}
+
+#welcome-user {
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
+}
+
+.table-responsive {
+    width: 100%;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+#ended-table {
+    margin-bottom: 100px;
+}
+
+#ongoing-table {
+    margin-top: 50px;
+}
+
+.table > thead > tr > th {
+    width: 33%;
+    color: #2d2d2d;
+    font-weight: 100 !important;
+    font-size: 12px;
+    font-family: 'OldNewspaperTypes';
+    border-bottom: 2px solid #000000;
+}
+
+.game-name {
+    font-size: 18px !important;
+}
+
+.start-game-button,
+.start-game-button:hover,
+.start-game-button:visited,
+.start-game-button:link {
+    background: #2d2d2d;
+    display: inline-block;
+    font-family: 'OldNewspaperTypes';
+    text-decoration: none;
+}
+
+.start-game-button > div > a,
+.start-game-button > div > a:hover,
+.start-game-button > div > a:visited,
+.start-game-button > div > a:link {
+    color: #ffffff;
+    padding: 7px 30px 7px 30px;
+    display: block;
+    font-size: 12px !important;
+}
+
+.table > tbody > tr > td {
+    vertical-align: middle;
+    border-top: 2px solid #d0c5b0;
+    font-weight: lighter;
+    font-size: 12px;
+    color: #2d2d2d;
+    font-family: 'OldNewspaperTypes';
+}
+
+.table > tbody > tr:last-child {
+    border-bottom: 2px solid #d0c5b0 !important;
+}
+
+/* Auth Container */
+.auth-container {
+    /*border: 1px solid red;*/
+    text-align: center;
+}
+
+.auth-container > div {
+    margin: 30px auto;
+    /*border: 1px solid red;*/
+    display: inline-block;
+}
+
+/*.form-group {*/
+    /*border: 1px solid red;*/
+    /*padding: 0;*/
+/*}*/
+
+.auth-container > div > label {
+    font-family: 'OldNewspaperTypes';
+    max-width: 80px;
+    width: 80px;
+    /*border: 1px solid red;*/
+    margin-right: 5px;
+    text-align: left;
+}
+
+.auth-container > div > input {
+    height: 35px;
+    padding: 0;
+    border: 1px solid #000000;
+    background: transparent;
+    margin-bottom: 10px;
+    width: 200px;
+}
+
+.auth-container > div > a {
+    font-family: 'OldNewspaperTypes';
+    text-align: right;
+    display: block;
+    text-decoration: underline;
+    font-size: 12px;
+    font-weight: 100;
+}
+
+.auth-container > div > h3 {
+    text-align: left;
+    font-family: 'OldNewspaperTypes';
+    margin-bottom: 40px;
+    font-weight: 100;
+}
+
+.submit-button {
+    width: 100%;
+    border: none;
+    color: #fff;
+    background: #2d2d2d;
+    font-family: 'OldNewspaperTypes';
+    padding: 10px;
+}
+
+.submit-button:focus {
+    outline: none;
+}
+
+.auth-container > div > span, .join-us {
+    font-size: 12px;
+    font-family: 'OldNewspaperTypes';
+    font-weight: 100;
+}
+
+.join-us {
+    border: none;
+    text-decoration: underline;
+    background: transparent;
+}
+
+.auth-container > div > span,
+.auth-container > div > h3,
+.auth-container > div > label,
+.auth-container > div > a,
+.join-us {
+    color: #2d2d2d;
+}
+
+#login-logout-section a {
+    cursor: pointer;
+}
+
+.join-game-button-div {
+    background: transparent;
+}
+
+.join-game-as-button, .create-game-button {
+    background: #2d2d2d;
+    font-family: 'OldNewspaperTypes';
+    text-decoration: none;
+    border: none;
+    color: #ffffff;
+    padding: 7px 30px 7px 30px;
+    font-size: 12px !important;
+    display: inline-block;
+    margin-bottom: 5px;
+    min-width: 180px;
+}
+
+.width-13 .download {
+    padding: 15px 0px 15px 15px;
+    display: block;
+    text-align: right;
+    width: 100%;
+}
+
+
