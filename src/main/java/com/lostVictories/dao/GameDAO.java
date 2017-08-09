@@ -39,6 +39,11 @@ public class GameDAO {
 	}
 	
 	public List<Game> loadAllGames(UUID userID) {
+
+        GetResponse response = esClient.prepareGet("game_request", "game_request", "gameStatus")
+                .execute()
+                .actionGet();
+
 		ImmutableOpenMap<String, IndexMetaData> indices = esClient.admin().cluster()
 		    .prepareState().execute()
 		    .actionGet().getState()
