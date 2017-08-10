@@ -4,6 +4,7 @@ import static com.lostVictories.dao.UserDAO.getESClient;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 import static org.elasticsearch.index.query.FilterBuilders.termFilter;
 import static org.elasticsearch.index.query.FilterBuilders.andFilter;
+import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,9 +41,9 @@ public class GameDAO {
 	
 	public List<Game> loadAllGames(UUID userID) {
 
-        GetResponse response = esClient.prepareGet("game_request", "game_request", "gameStatus")
-                .execute()
-                .actionGet();
+        SearchResponse searchResponse = esClient.prepareSearch("game_request")
+                .setQuery(matchAllQuery()).setSize(10000)
+                .execute().actionGet();;
 
 		ImmutableOpenMap<String, IndexMetaData> indices = esClient.admin().cluster()
 		    .prepareState().execute()
