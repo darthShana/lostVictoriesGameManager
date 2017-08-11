@@ -15,6 +15,11 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import com.lostVictories.api.LostVictoriesServerGrpc;
+import com.lostVictories.api.PlayerDetails;
+import com.lostVictories.model.GameRequest;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -39,44 +44,35 @@ public class GameDAO {
 		esClient = getESClient();
 	}
 	
-	public List<Game> loadAllGames(UUID userID) {
+	public List<Game> loadAllGames(UUID userID, List<GameRequest> allGames) {
 
-        SearchResponse searchResponse = esClient.prepareSearch("game_request")
-                .setQuery(matchAllQuery()).setSize(10000)
-                .execute().actionGet();;
-
-		ImmutableOpenMap<String, IndexMetaData> indices = esClient.admin().cluster()
-		    .prepareState().execute()
-		    .actionGet().getState()
-		    .getMetaData().indices();
-		
 		List<Game> ret = new ArrayList<Game>();
-		for(Iterator<IndexMetaData> it = indices.valuesIt();it.hasNext();){
-			IndexMetaData index = it.next();
-			if(index.getIndex().endsWith("_unit_status")){
-				GetResponse response = esClient.prepareGet(index.getIndex(), "gameStatus", "gameStatus")
-				        .execute()
-				        .actionGet();
-				
-				FilteredQueryBuilder builder = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(),
-						termFilter("userID",userID));
-			
-			
-				SearchResponse characterSearch =
-						esClient.prepareSearch(index.getIndex()).setTypes("unitStatus")
-					       .setQuery(builder)
-					       .execute()
-					       .actionGet();
-				Iterator<SearchHit> iterator = characterSearch.getHits().iterator();
-				if(!iterator.hasNext()){
-					ret.add(new Game(response.getSource()));
-				}else{
-					SearchHit character = iterator.next();
-					ret.add(new Game(response.getSource(), character.getId(), (String)character.getSource().get("country")));
-				}
+        allGames.forEach(game->{
+        	PlayerDetails playerDetails = null;
+			if("STARTED".equals(game.getStatus())){
+				playerDetails = getPlayerDetails(userID, game);
 			}
-		}
+			if(playerDetails!=null){
+				ret.add(new Game(game, playerDetails.getCharacterID(), playerDetails.getCountry()));
+			}else{
+				ret.add(new Game(game));
+			}
+
+		});
+
 		return ret;
+	}
+
+	private PlayerDetails getPlayerDetails(UUID userID, GameRequest game) {
+		ManagedChannel grpcChannel = ManagedChannelBuilder.forAddress(game.getHost(), game.getPort())
+                .usePlaintext(true)
+                .build();
+		LostVictoriesServerGrpc.LostVictoriesServerBlockingStub lostVictoriesServerBlockingStub = LostVictoriesServerGrpc.newBlockingStub(grpcChannel);
+		PlayerDetails playerDetails = lostVictoriesServerBlockingStub.getPlayerDetails(PlayerDetails.newBuilder().setPlayerID(userID.toString()).build());
+		if(playerDetails.getCharacterID()!=null){
+            return playerDetails;
+        }
+        return null;
 	}
 
 	public void joinGame(String indexName, User user, String country) throws IOException {

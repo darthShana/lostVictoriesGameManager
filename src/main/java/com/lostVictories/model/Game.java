@@ -1,5 +1,7 @@
 package com.lostVictories.model;
 
+import com.lostVictories.api.Country;
+
 import java.io.Serializable;
 import java.util.Map;
 import java.util.UUID;
@@ -17,27 +19,27 @@ public class Game implements Serializable{
 	private String gameStatus;
 	private String victor;
 	private Long endDate;
-	private String country;
+	private Country country;
 
-	public Game(){}
+	private Game(){}
 
-	public Game(Map<String, Object> source) {
-		id = (String)source.get("gameID");
-		name = (String) source.get("name");
-		host = (String) source.get("host");
-		port = source.get("port")+"";
-		startDate =  (long) source.get("startDate");
-		gameVersion = (String) source.get("gameVersion");
-		setGameStatus((String) source.get("gameStatus"));
-		setVictor((String) source.get("victor"));
-		setEndDate((Long) source.get("endDate"));
+	public Game(GameRequest source) {
+		id = source.getGameID();
+		name = source.getGameName();
+		host = source.getHost();
+		port = source.getPort().toString();
+		startDate =  source.getStartDate();
+		endDate = source.getEndDate();
+		gameVersion = source.getGameVersion();
+		gameStatus = source.getStatus();
+		victor = source.getVictor();
 	}
 
-	public Game(Map<String, Object> source, String id, String country) {
-		this(source);
+	public Game(GameRequest gameRequest, String id, Country country) {
+		this(gameRequest);
 		avatarID = UUID.fromString(id);
 		joined = true;
-		this.setCountry(country);
+		this.country = country;
 	}
 
 	public String getId() {
@@ -128,12 +130,8 @@ public class Game implements Serializable{
 		this.endDate = endDate;
 	}
 
-	public String getCountry() {
+	public Country getCountry() {
 		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
 	}
 
 }
