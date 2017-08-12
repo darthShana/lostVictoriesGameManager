@@ -1,9 +1,6 @@
 package com.lostVictories.model;
 
-import com.lostVictories.api.Country;
-
 import java.io.Serializable;
-import java.util.Map;
 import java.util.UUID;
 
 public class Game implements Serializable{
@@ -19,9 +16,7 @@ public class Game implements Serializable{
 	private String gameStatus;
 	private String victor;
 	private Long endDate;
-	private Country country;
-
-	private Game(){}
+	private String country;
 
 	public Game(GameRequest source) {
 		id = source.getGameID();
@@ -35,11 +30,15 @@ public class Game implements Serializable{
 		victor = source.getVictor();
 	}
 
-	public Game(GameRequest gameRequest, String id, Country country) {
+	public Game(GameRequest gameRequest, UUID id, String country) {
 		this(gameRequest);
-		avatarID = UUID.fromString(id);
+		avatarID = id;
 		joined = true;
 		this.country = country;
+	}
+
+	public Game(String gameName) {
+		name = gameName;
 	}
 
 	public String getId() {
@@ -130,7 +129,7 @@ public class Game implements Serializable{
 		this.endDate = endDate;
 	}
 
-	public Country getCountry() {
+	public String getCountry() {
 		return country;
 	}
 

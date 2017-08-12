@@ -15,11 +15,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import com.lostVictories.api.LostVictoriesServerGrpc;
-import com.lostVictories.api.PlayerDetails;
+
 import com.lostVictories.model.GameRequest;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
 import org.elasticsearch.action.admin.indices.refresh.RefreshRequest;
 import org.elasticsearch.action.get.GetResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -42,37 +39,6 @@ public class GameDAO {
 
 	public GameDAO() {
 		esClient = getESClient();
-	}
-	
-	public List<Game> loadAllGames(UUID userID, List<GameRequest> allGames) {
-
-		List<Game> ret = new ArrayList<Game>();
-        allGames.forEach(game->{
-        	PlayerDetails playerDetails = null;
-			if("STARTED".equals(game.getStatus())){
-				playerDetails = getPlayerDetails(userID, game);
-			}
-			if(playerDetails!=null){
-				ret.add(new Game(game, playerDetails.getCharacterID(), playerDetails.getCountry()));
-			}else{
-				ret.add(new Game(game));
-			}
-
-		});
-
-		return ret;
-	}
-
-	private PlayerDetails getPlayerDetails(UUID userID, GameRequest game) {
-		ManagedChannel grpcChannel = ManagedChannelBuilder.forAddress(game.getHost(), game.getPort())
-                .usePlaintext(true)
-                .build();
-		LostVictoriesServerGrpc.LostVictoriesServerBlockingStub lostVictoriesServerBlockingStub = LostVictoriesServerGrpc.newBlockingStub(grpcChannel);
-		PlayerDetails playerDetails = lostVictoriesServerBlockingStub.getPlayerDetails(PlayerDetails.newBuilder().setPlayerID(userID.toString()).build());
-		if(playerDetails.getCharacterID()!=null){
-            return playerDetails;
-        }
-        return null;
 	}
 
 	public void joinGame(String indexName, User user, String country) throws IOException {

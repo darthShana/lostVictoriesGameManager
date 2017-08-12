@@ -1,6 +1,7 @@
 package com.lostVictories.model;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -28,7 +29,15 @@ public class GameService {
 	}
 	
 	public List<Game> getGameInfo(UUID id) {
-		return gameDAO.loadAllGames(id);
+		List<Game> ret = new ArrayList<>();
+		gameRequestDAO.getAll().forEach(g->{
+			if(g.getPlayers().containsKey(id)){
+				ret.add(new Game(g, g.getPlayers().get(id), g.getPlayerCountries().get(id)));
+			}else{
+				ret.add(new Game(g));
+			}
+		});
+		return ret;
 	}
 
 	public void joinGame(String instance, User user, String country) throws IOException {
@@ -43,7 +52,7 @@ public class GameService {
 		if(gameName == null){
 			throw new RuntimeException("no game name unavailable");
 		}
-		List<Game> existingGames = gameDAO.loadAllGames(user.getId());
+		List<Game> existingGames = getGameInfo(user.getId());
 		existingGames = existingGames.stream().filter(g -> "inProgress".equals(g.getGameStatus())).collect(Collectors.toList());
 		log.info("existing inprogress games:"+existingGames);
 		
@@ -57,8 +66,7 @@ public class GameService {
 		
 		gameRequestDAO.cretaeGameRequest(gameName, user);
 		
-		Game game = new Game();
-		game.setName(gameName);
+		Game game = new Game(gameName);
 		return game;
 	}
 

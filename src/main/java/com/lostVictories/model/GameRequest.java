@@ -24,6 +24,9 @@ public class GameRequest {
 	private String gameVersion;
 	private String victor;
 
+	private Map<UUID, UUID> players;
+	private Map<UUID, String> playerCountries;
+
 
 	public GameRequest(String gameName, User user) {
 		this.gameName = gameName;
@@ -102,6 +105,16 @@ public class GameRequest {
 	public String getGameVersion() {
 		return gameVersion;
 	}
+
+	public Map<UUID, UUID> getPlayers() {
+		return players;
+	}
+
+	public Map<UUID, String> getPlayerCountries() {
+		return playerCountries;
+	}
+
+
 
 	public void setStatus(String status) {
 		this.status = status;
