@@ -38,7 +38,7 @@ public class JoinGameResource {
 		UUID id = UUID.fromString(u);
 		
 		Game game = MAPPER.readValue((String)payload.get("game"), Game.class);
-		gameService.joinGame(game.getId(), userDAO.getUser(id), country);
+		gameService.joinGame(game.getName(), userDAO.getUser(id), country);
 		return gameService.getGameInfo(id);
     }
 }

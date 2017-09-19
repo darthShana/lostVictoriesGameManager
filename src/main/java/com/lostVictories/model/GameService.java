@@ -31,8 +31,8 @@ public class GameService {
 	public List<Game> getGameInfo(UUID id) {
 		List<Game> ret = new ArrayList<>();
 		gameRequestDAO.getAll().forEach(g->{
-			if(g.getPlayers().containsKey(id)){
-				ret.add(new Game(g, g.getPlayers().get(id), g.getPlayerCountries().get(id)));
+			if(g.getPlayers().containsKey(id.toString())){
+				ret.add(new Game(g, UUID.fromString(g.getPlayers().get(id.toString())), g.getPlayerCountries().get(id.toString())));
 			}else{
 				ret.add(new Game(g));
 			}
@@ -40,10 +40,15 @@ public class GameService {
 		return ret;
 	}
 
-	public void joinGame(String instance, User user, String country) throws IOException {
-		String indexName = instance+"_unit_status";
-		
-		gameDAO.joinGame(indexName, user, country);
+	public void joinGame(String name, User user, String country) throws IOException {
+		GameRequest byName = gameRequestDAO.getByName(name);
+		if(byName!=null){
+			UUID uuid = gameDAO.joinGame(byName, user, country);
+			byName.addPlayer(user.getId(), uuid, country);
+			gameRequestDAO.updatePlayers(byName);
+		}else{
+			throw new RuntimeException("unable to find requested game:"+name);
+		}
 		
 	}
 	

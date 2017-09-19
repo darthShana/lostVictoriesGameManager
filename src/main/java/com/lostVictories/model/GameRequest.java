@@ -3,7 +3,9 @@ package com.lostVictories.model;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.elasticsearch.common.xcontent.XContentBuilder;
@@ -12,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class GameRequest {
 
+    private UUID id;
 	private String gameName;
 	private long requestTime;
 	private UUID requestUser;
@@ -24,11 +27,12 @@ public class GameRequest {
 	private String gameVersion;
 	private String victor;
 
-	private Map<UUID, UUID> players;
-	private Map<UUID, String> playerCountries;
+	private Map<String, String> players = new HashMap<>();
+	private Map<String, String> playerCountries = new HashMap<>();
 
 
 	public GameRequest(String gameName, User user) {
+	    this.id = UUID.randomUUID();
 		this.gameName = gameName;
 		this.requestTime = System.currentTimeMillis();
 		this.requestUser = user.getId();
@@ -36,6 +40,7 @@ public class GameRequest {
 	}
 
 	public GameRequest(UUID id, Map<String, Object> source) {
+	    this.id = id;
 		this.gameName = (String) source.get("gameName");
 		this.requestTime = (long) source.get("requestTime");
 		this.requestUser = UUID.fromString((String) source.get("requestUser"));
@@ -47,8 +52,18 @@ public class GameRequest {
 		this.endDate = (Long) source.get("endDate");
 		this.gameVersion = (String) source.get("gameVersion");
 		this.victor = (String) source.get("victor");
+		if(source.get("players")!=null) {
+            this.players = (Map<String, String>) source.get("players");
+        }
+		if(source.get("playerCountries")!=null) {
+            this.playerCountries = (Map<String, String>) source.get("playerCountries");
+        }
 
 	}
+
+    public UUID getId() {
+        return id;
+    }
 
 	public String getGameName() {
 		return gameName;
@@ -90,11 +105,11 @@ public class GameRequest {
 		return gameID;
 	}
 
-	public long getStartDate() {
+	public Long getStartDate() {
 		return startDate;
 	}
 
-	public long getEndDate() {
+	public Long getEndDate() {
 		return endDate;
 	}
 
@@ -106,11 +121,11 @@ public class GameRequest {
 		return gameVersion;
 	}
 
-	public Map<UUID, UUID> getPlayers() {
+	public Map<String, String> getPlayers() {
 		return players;
 	}
 
-	public Map<UUID, String> getPlayerCountries() {
+	public Map<String, String> getPlayerCountries() {
 		return playerCountries;
 	}
 
@@ -129,6 +144,11 @@ public class GameRequest {
 		                .field("requestUser", requestUser)
 		                .field("status", status)
 		            .endObject();
+	}
+
+	public void addPlayer(UUID user, UUID character, String country) {
+		players.put(user.toString(), character.toString());
+		playerCountries.put(user.toString(), country);
 	}
 
 }

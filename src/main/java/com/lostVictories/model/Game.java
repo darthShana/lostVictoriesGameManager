@@ -9,7 +9,7 @@ public class Game implements Serializable{
 	private String name;
 	private String host;
 	private String port;
-	private long startDate;
+	private Long startDate;
 	private boolean joined;
 	private UUID avatarID;
 	private String gameVersion;
@@ -18,11 +18,13 @@ public class Game implements Serializable{
 	private Long endDate;
 	private String country;
 
+	private Game(){}
+
 	public Game(GameRequest source) {
 		id = source.getGameID();
 		name = source.getGameName();
 		host = source.getHost();
-		port = source.getPort().toString();
+		port = (source.getPort()!=null)?source.getPort().toString():null;
 		startDate =  source.getStartDate();
 		endDate = source.getEndDate();
 		gameVersion = source.getGameVersion();
@@ -73,7 +75,7 @@ public class Game implements Serializable{
 		this.port = port;
 	}
 
-	public long getStartDate() {
+	public Long getStartDate() {
 		return startDate;
 	}
 
