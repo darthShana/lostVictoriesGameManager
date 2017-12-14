@@ -3,8 +3,9 @@ package com.lostVictories.service;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,13 +16,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import com.lostVictories.dao.UserDAO;
-import com.lostVictories.model.GameService;
 import com.lostVictories.model.User;
 
 @Service
 public class GameAuthenticationProvider implements AuthenticationProvider {
 
-	private static Logger log = Logger.getLogger(GameAuthenticationProvider.class); 
+	private static Logger log = LoggerFactory.getLogger(GameAuthenticationProvider.class);
 	private UserDAO userDAO;
 
 	public GameAuthenticationProvider(UserDAO userDAO) {

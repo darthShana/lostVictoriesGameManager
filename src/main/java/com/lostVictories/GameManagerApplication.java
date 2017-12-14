@@ -10,7 +10,6 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 @SpringBootApplication
 @EnableAutoConfiguration
 public class GameManagerApplication extends SpringBootServletInitializer{
-//	implements ServletContextInitializer{
 
 	
 	public static void main(String[] args){
@@ -22,9 +21,6 @@ public class GameManagerApplication extends SpringBootServletInitializer{
         return application.sources(GameManagerApplication.class);
     }
 	
-//	@Override
-//    public void onStartup(ServletContext servletContext) throws ServletException {
-//        servletContext.getSessionCookieConfig().setPath("/");
-//    }
+
 
 }

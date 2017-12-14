@@ -7,7 +7,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ import com.lostVictories.resources.exceptions.InvalidUserException;
 @RequestMapping("/authenticated/games")
 public class GamesResource {
 
-	private static Logger log = Logger.getLogger(GamesResource.class); 
+	private static Logger log = LoggerFactory.getLogger(GamesResource.class);
 	public static ObjectMapper MAPPER;
 	static{
 		MAPPER = new ObjectMapper();
@@ -65,6 +66,7 @@ public class GamesResource {
 		try{
 			return gameService.createGame(user);
 		}catch(Exception e){
+		    e.printStackTrace();
 			throw new GameRequestFailureException(e.getMessage());
 		}
 	}

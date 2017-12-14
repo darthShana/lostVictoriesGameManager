@@ -2,10 +2,9 @@ package com.lostVictories.dao;
 
 import static com.lostVictories.dao.UserDAO.getESClient;
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
@@ -15,7 +14,6 @@ import java.util.stream.StreamSupport;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.model.*;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
 import com.github.dockerjava.core.DockerClientBuilder;
 import org.apache.log4j.Logger;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequestBuilder;
@@ -26,8 +24,7 @@ import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.FilteredQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.springframework.stereotype.Repository;
@@ -70,7 +67,8 @@ public class GameRequestDAO {
 	        	.field("index", "not_analyzed")
 	        	.field("store", "yes")
 	        	.endObject();
-			    
+            builder.endObject().endObject();
+
 		    createIndexRequestBuilder.addMapping(indexName, builder);
 		    createIndexRequestBuilder.execute().actionGet();
         }
@@ -93,8 +91,7 @@ public class GameRequestDAO {
 			return true;
 		}
 		
-		FilteredQueryBuilder builder = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(),
-				   FilterBuilders.termFilter("gameName",name));
+		QueryBuilder builder = constantScoreQuery(boolQuery().must(matchQuery("gameName",name)));
 		SearchResponse response =
 				esClient.prepareSearch(indexName).setTypes(indexName)
 			       .setQuery(builder)
@@ -107,8 +104,8 @@ public class GameRequestDAO {
 	}
 
     public GameRequest getByName(String name) {
-        FilteredQueryBuilder builder = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(),
-                FilterBuilders.termFilter("gameName",name));
+        QueryBuilder builder = constantScoreQuery(
+                boolQuery().must(matchQuery("gameName",name)));
         SearchResponse response =
                 esClient.prepareSearch(indexName).setTypes(indexName)
                         .setQuery(builder)
@@ -122,7 +119,7 @@ public class GameRequestDAO {
 
     }
 
-	public void cretaeGameRequest(String gameName, User user) throws IOException {
+	public void createGameRequest(String gameName, User user) throws IOException {
 		GameRequest gameRequest = new GameRequest(gameName, user);
 		
 		try {
@@ -130,25 +127,19 @@ public class GameRequestDAO {
 			        .setSource(gameRequest.getJSONRepresentation())
 			        .execute()
 			        .actionGet();
-
 			esClient.admin().indices().refresh(new RefreshRequest(indexName)).actionGet();
+
+			log.info("starting docker container for game:"+gameName);
             DockerClient dockerClient = DockerClientBuilder.getInstance().build();
+//            ExposedPort tcp5055 = ExposedPort.tcp(5055);
+//            Ports portBindings = new Ports();
+//            portBindings.bind(tcp5055, Ports.Binding.bindPort(5055));
 
-			Volume volume1 = new Volume("/etc/config/lostVictoriesServer.properties");
-            ExposedPort tcp5055 = ExposedPort.tcp(5055);
-            Ports portBindings = new Ports();
-            portBindings.bind(tcp5055, Ports.Binding.bindPort(5055));
-
-			CreateContainerResponse container = dockerClient.createContainerCmd("darthshana/lostvictoryserver:0.0.1-SNAPSHOT")
-					.withVolumes(volume1)
-					.withBinds(new Bind("/home/darthshana/gameEngine/lostVictoriesServer.properties", volume1))
-//					.withBinds(new Bind("/Users/dharshanar/development/eclipse/lostVictoriesSever/src/test/resources/server.properties", volume1))
-                    .withExposedPorts(tcp5055)
-                    .withPortBindings(portBindings)
-                    .withLinks(new Link("redis", "redis"), new Link("elasticsearch", "elasticsearch"))
+            CreateContainerResponse container = dockerClient.createContainerCmd("darthshana/lostvictoryserver:0.0.1-SNAPSHOT")
+                    .withNetworkMode("host")
+//                    .withExposedPorts(tcp5055)
                     .withEnv("GAME_NAME="+gameName, "GAME_PORT=5055")
-//					.withCmd("/usr/bin/java", "-jar", "/usr/lostvictories/app.jar", "-P/etc/config/lostVictoriesServer.properties", gameName, "5055")
-					.exec();
+                    .exec();
 
 			dockerClient.startContainerCmd(container.getId()).exec();
 		} catch (IOException e) {
@@ -178,6 +169,7 @@ public class GameRequestDAO {
 						.endObject()
 				)
 				.get();
+		esClient.admin().indices().prepareRefresh(indexName).execute().actionGet();
 	}
 
 //	public static void main(String[] args) throws IOException {

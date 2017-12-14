@@ -1,6 +1,9 @@
 package com.lostVictories.dao;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -13,18 +16,20 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.IndicesAdminClient;
 import org.elasticsearch.client.transport.TransportClient;
-import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.index.query.FilterBuilders;
-import org.elasticsearch.index.query.FilteredQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.stereotype.Repository;
 
 import com.lostVictories.model.User;
+
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.constantScoreQuery;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
 @Repository
 public class UserDAO {
@@ -39,7 +44,7 @@ public class UserDAO {
 		final IndicesExistsResponse res = adminClient.prepareExists(indexName).execute().actionGet();
 		if (!res.isExists()) {
 			final CreateIndexRequestBuilder createIndexRequestBuilder = adminClient.prepareCreate(indexName);
-			
+
 		    XContentBuilder builder = XContentFactory.jsonBuilder().startObject().startObject("user").startObject("properties");
 		    builder.startObject("username")
 	        	.field("type", "string")
@@ -56,15 +61,18 @@ public class UserDAO {
 	        	.field("index", "not_analyzed")
 	        	.field("store", "yes")
 	        	.endObject();
-			    
-		    createIndexRequestBuilder.addMapping("user", builder);
-		    createIndexRequestBuilder.execute().actionGet();
+		    builder.endObject().endObject().endObject();
+
+            createIndexRequestBuilder.addMapping("user", builder);
+            createIndexRequestBuilder.execute().actionGet();
         }
 	}
 	
 	public boolean existsUsername(String username) {
-		FilteredQueryBuilder builder = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(),
-				   FilterBuilders.termFilter("username",username));
+        QueryBuilder builder = constantScoreQuery(
+                boolQuery().must(
+                        matchQuery("username",username)));
+
 		SearchResponse response =
 				esClient.prepareSearch(indexName).setTypes("user")
 			       .setQuery(builder)
@@ -74,8 +82,9 @@ public class UserDAO {
 	}
 
 	public boolean existsEmail(String email) {
-		FilteredQueryBuilder builder = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(),
-				   FilterBuilders.termFilter("email",email));
+        QueryBuilder builder = constantScoreQuery(
+                boolQuery().must(matchQuery("email",email)));
+
 		SearchResponse response =
 				esClient.prepareSearch(indexName).setTypes("user")
 			       .setQuery(builder)
@@ -85,8 +94,8 @@ public class UserDAO {
 	}
 	
 	public User getUser(String username) {
-		FilteredQueryBuilder builder = QueryBuilders.filteredQuery(QueryBuilders.matchAllQuery(),
-				   FilterBuilders.termFilter("username",username));
+        QueryBuilder builder = constantScoreQuery(boolQuery().must(matchQuery("username",username)));
+
 		SearchResponse response =
 				esClient.prepareSearch(indexName).setTypes("user")
 			       .setQuery(builder)
@@ -97,18 +106,23 @@ public class UserDAO {
 			return null;
 		}
 		SearchHit next = iterator.next();
-		return new User(UUID.fromString(next.getId()), next.getSource());
+		return new User(UUID.fromString(next.getId()), next.getSourceAsMap());
 	}
-	
-	public static Client getESClient() {
-		if(transportClient==null){
-			transportClient = new TransportClient();
-			transportClient = transportClient.addTransportAddress(new InetSocketTransportAddress("localhost", 9300));
-		}
-		return (Client) transportClient;
 
-		
-	}
+    public static Client getESClient() {
+        if(transportClient==null){
+            try {
+                transportClient = new PreBuiltTransportClient(Settings.EMPTY)
+                        .addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName("localhost"), 9300));
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
+        return (Client) transportClient;
+
+
+    }
 
 	public void createUser(User user, UUID id) {
 		

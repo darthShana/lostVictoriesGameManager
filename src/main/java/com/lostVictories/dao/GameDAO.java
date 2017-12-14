@@ -1,52 +1,74 @@
 package com.lostVictories.dao;
 
-import static com.lostVictories.dao.UserDAO.getESClient;
-import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
-import static org.elasticsearch.index.query.FilterBuilders.termFilter;
 
-import java.io.IOException;
 import java.util.UUID;
 
 
-import com.lostVictories.api.JoinRequest;
-import com.lostVictories.api.LostVictoriesServerGrpc;
 import com.lostVictories.model.GameRequest;
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import org.elasticsearch.client.Client;
-import org.springframework.stereotype.Repository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import redis.clients.jedis.GeoRadiusResponse;
+import redis.clients.jedis.GeoUnit;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
-import com.lostVictories.model.User;
+import java.util.*;
+import java.util.stream.Collectors;
 
-@Repository
 public class GameDAO {
 
-	private Client esClient;
+    private static Logger log = LoggerFactory.getLogger(GameDAO.class);
 
-	public GameDAO() {
-		esClient = getESClient();
-	}
+    private final JedisPool jedisPool;
+    private final String characterStatus;
+    private final String characterLocation;
 
-	public UUID joinGame(GameRequest game, User user, String country) throws IOException {
-		ManagedChannel managedChannel = ManagedChannelBuilder.forAddress("localhost", game.getPort())
-				.usePlaintext(true)
-				.build();
-		LostVictoriesServerGrpc.LostVictoriesServerBlockingStub stub = LostVictoriesServerGrpc.newBlockingStub(managedChannel);
-		JoinRequest joinResponse = stub.joinGame(JoinRequest.newBuilder()
-				.setUserID(user.getId().toString())
-				.setCountry(country)
-				.build());
-		return UUID.fromString(joinResponse.getCharacterID());
-	}
-	
-	private String createBootCampObjective(String country)  {
-		
-		if("GERMAN".equals(country)){
-			return "{\"classType\":\"com.jme3.lostVictories.objectives.CompleteBootCamp\",\"location\":{\"x\":246.29144287109375,\"y\":96.77545928955078,\"z\":55.41226577758789}}";
-		}else{
-			return "{\"classType\":\"com.jme3.lostVictories.objectives.CompleteBootCamp\",\"location\":{\"x\":-57.21826,\"y\":96.380104,\"z\":-203.38945}}";
-		}
-		
-	}
+    public GameDAO(String nameSpace, JedisPool jedisPool) {
+        this.characterStatus = nameSpace+".characterStatus";
+        this.characterLocation = nameSpace+".characterLocation";
+        this.jedisPool = jedisPool;
+    }
+
+    private Set<GameCharacter> getAllCharacters(Jedis jedis) {
+        List<GeoRadiusResponse> mapResponse = jedis.georadius(this.characterLocation, 0, 0, 1000000, GeoUnit.KM);
+        return mapResponse.stream().map(r->new GameCharacter(r.getMemberByString(), jedis.hgetAll(characterStatus + "." + r.getMemberByString()))).filter(c->c!=null).collect(Collectors.toSet());
+    }
+
+    public UUID joinGame(GameRequest request, UUID userId, String country) {
+        log.info("user:"+userId+" attempting to join:"+request.getGameName()+" name space:"+characterLocation);
+
+
+        try (Jedis jedis = jedisPool.getResource()){
+
+            Optional<GameCharacter> available = getAllCharacters(jedis).stream()
+                    .filter(c -> "SOLDIER".equals(c.props.get("type")) && "CADET_CORPORAL".equals(c.props.get("rank")) && country.equals(c.props.get("country")))
+                    .findAny();
+
+            if(!available.isPresent()){
+                log.info("unable to find character to convert to avatar");
+                return null;
+            }
+            log.info("converting:"+available.get().identity+" to avatar for user:"+userId+" on index:"+characterStatus);
+
+            jedis.hset(characterStatus+"."+available.get().identity, "type", "AVATAR");
+            jedis.hset(characterStatus+"."+available.get().identity, "userID", userId.toString());
+            return UUID.fromString(available.get().identity);
+        }catch(Throwable e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    class GameCharacter{
+
+        String identity;
+        Map<String, String> props;
+
+        public GameCharacter(String identity, Map<String, String> stringStringMap) {
+
+            this.identity = identity;
+            this.props = stringStringMap;
+        }
+    }
+
 
 }

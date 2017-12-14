@@ -1,6 +1,5 @@
 package com.lostVictories.bootstrap;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,6 +7,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
 import com.lostVictories.service.GameAuthenticationProvider;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+
+import javax.inject.Inject;
 
 @Configuration
 @EnableWebSecurity
@@ -15,7 +17,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private GameAuthenticationProvider authenticationProvider;
 
-	@Autowired
+	@Inject
 	public WebSecurityConfig(GameAuthenticationProvider authenticationProvider) {
 		this.authenticationProvider = authenticationProvider;
 	}
@@ -31,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
          .formLogin()
              .loginPage("/login")
              .defaultSuccessUrl("/home", true)
-             .permitAll()
+             .permitAll().failureHandler(new SimpleUrlAuthenticationFailureHandler())
              .and()
          .logout()
              .permitAll();
@@ -41,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 	}
 	
-	@Autowired
+	@Inject
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider);
 

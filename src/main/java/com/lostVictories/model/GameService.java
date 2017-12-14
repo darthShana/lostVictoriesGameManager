@@ -7,24 +7,30 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lostVictories.dao.GameDAO;
 import com.lostVictories.dao.GameRequestDAO;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 @Service
 public class GameService {
 
-	private static Logger log = Logger.getLogger(GameService.class); 
+	private static Logger log = LoggerFactory.getLogger(GameService.class);
 	private static final int MAX_ALLOWED_RUNNING = 1;
-	private GameDAO gameDAO;
 	private GameRequestDAO gameRequestDAO;
+    private final JedisPool jedisPool;
 
-	@Autowired
-	public GameService(GameDAO gameDAO, GameRequestDAO gameRequestDAO) {
-		this.gameDAO = gameDAO;
+    @Autowired
+	public GameService(GameRequestDAO gameRequestDAO) {
+        JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
+        jedisPoolConfig.setMaxTotal(100);
+        jedisPoolConfig.setMinIdle(100);
+        jedisPool = new JedisPool(jedisPoolConfig, "localhost");
 		this.gameRequestDAO = gameRequestDAO;
 	}
 	
@@ -42,8 +48,10 @@ public class GameService {
 
 	public void joinGame(String name, User user, String country) throws IOException {
 		GameRequest byName = gameRequestDAO.getByName(name);
+		GameDAO gameDAO = new GameDAO(byName.getNameSpace(), jedisPool);
+
 		if(byName!=null){
-			UUID uuid = gameDAO.joinGame(byName, user, country);
+			UUID uuid = gameDAO.joinGame(byName, user.getId(), country);
 			byName.addPlayer(user.getId(), uuid, country);
 			gameRequestDAO.updatePlayers(byName);
 		}else{
@@ -69,7 +77,7 @@ public class GameService {
 			throw new RuntimeException("game limit exceeded");
 		}
 		
-		gameRequestDAO.cretaeGameRequest(gameName, user);
+		gameRequestDAO.createGameRequest(gameName, user);
 		
 		Game game = new Game(gameName);
 		return game;

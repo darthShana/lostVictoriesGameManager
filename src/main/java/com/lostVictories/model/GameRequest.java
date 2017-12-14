@@ -22,10 +22,12 @@ public class GameRequest {
 	private String host;
 	private Integer port;
 	private String gameID;
+    private String nameSpace;
 	private Long startDate;
 	private Long endDate;
 	private String gameVersion;
 	private String victor;
+    private String localIP;
 
 	private Map<String, String> players = new HashMap<>();
 	private Map<String, String> playerCountries = new HashMap<>();
@@ -52,6 +54,8 @@ public class GameRequest {
 		this.endDate = (Long) source.get("endDate");
 		this.gameVersion = (String) source.get("gameVersion");
 		this.victor = (String) source.get("victor");
+		this.nameSpace = (String) source.get("nameSpace");
+		this.localIP = (String) source.get("localIP");
 		if(source.get("players")!=null) {
             this.players = (Map<String, String>) source.get("players");
         }
@@ -151,4 +155,9 @@ public class GameRequest {
 		playerCountries.put(user.toString(), country);
 	}
 
+    public String getNameSpace() {
+        return nameSpace;
+    }
+
+    public String getLocalIP() { return localIP;}
 }
